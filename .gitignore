@@ -2,3 +2,4 @@ database/*.sqlite
 *.log
 /docs/build/
 .env
+tests/results.json
