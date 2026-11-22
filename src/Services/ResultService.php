@@ -76,7 +76,9 @@ final class ResultService
             $this->results->save($enrollmentId, (float) $ca, (float) $exam, $c['total'], $c['grade'], $c['point'], $lecturerId);
             $saved++;
         }
-        $this->audit->log($lecturerId, 'scores_saved', "{$saved} result(s) saved for {$course['code']}");
+        if ($saved > 0) {
+            $this->audit->log($lecturerId, 'scores_saved', "{$saved} result(s) saved for {$course['code']}");
+        }
         return $saved;
     }
 

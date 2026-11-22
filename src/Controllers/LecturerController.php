@@ -36,12 +36,13 @@ final class LecturerController extends Controller
             $this->verifyCsrf();
             $service = new ResultService();
             try {
+                // Save whatever is typed in the form first, so "Submit" never discards unsaved scores (fix for DEF-02)
+                $service->recordScores(Auth::id(), $courseId, (array) ($_POST['scores'] ?? []));
                 if (($_POST['action'] ?? '') === 'submit') {
                     $n = $service->submit(Auth::id(), $courseId);
                     $this->flash('success', "{$n} result(s) submitted to the admin for approval.");
                 } else {
-                    $n = $service->recordScores(Auth::id(), $courseId, (array) ($_POST['scores'] ?? []));
-                    $this->flash('success', "{$n} score(s) saved as draft.");
+                    $this->flash('success', 'Scores saved as draft.');
                 }
             } catch (ValidationException $e) {
                 $this->flash('error', $e->getMessage());

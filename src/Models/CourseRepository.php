@@ -9,8 +9,15 @@ final class CourseRepository extends Repository
     {
         return $this->insert(
             'INSERT INTO courses (code, title, credit_hours, semester, academic_year, lecturer_id) VALUES (?, ?, ?, ?, ?, ?)',
-            [strtoupper($code), $title, $credits, $semester, $year, $lecturerId]
+            [self::normalizeCode($code), $title, $credits, $semester, $year, $lecturerId]
         );
+    }
+
+    /** "csc201", "CSC  201" and "CSC 201" are the same course: store as "CSC 201" (fix for DEF-01). */
+    public static function normalizeCode(string $code): string
+    {
+        $code = strtoupper(preg_replace('/\s+/', '', $code));
+        return preg_replace('/^([A-Z]+)(\d+)$/', '$1 $2', $code);
     }
 
     /** Courses with lecturer name and the overall result status for each course. */
@@ -44,6 +51,6 @@ final class CourseRepository extends Repository
 
     public function codeExists(string $code): bool
     {
-        return $this->one('SELECT id FROM courses WHERE code = ?', [strtoupper($code)]) !== null;
+        return $this->one('SELECT id FROM courses WHERE code = ?', [self::normalizeCode($code)]) !== null;
     }
 }

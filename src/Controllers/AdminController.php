@@ -83,13 +83,13 @@ final class AdminController extends Controller
             try {
                 $action = $_POST['action'] ?? '';
                 if ($action === 'add_course') {
-                    $code = strtoupper(trim((string) ($_POST['code'] ?? '')));
+                    $code = CourseRepository::normalizeCode((string) ($_POST['code'] ?? ''));
                     $title = trim((string) ($_POST['title_text'] ?? ''));
                     $credits = (int) ($_POST['credit_hours'] ?? 0);
                     $semester = (int) ($_POST['semester'] ?? 0);
                     $year = trim((string) ($_POST['academic_year'] ?? ''));
                     $lecturer = ($_POST['lecturer_id'] ?? '') === '' ? null : (int) $_POST['lecturer_id'];
-                    if (!preg_match('/^[A-Z]{2,5}\s?\d{3}$/', $code)) {
+                    if (!preg_match('/^[A-Z]{2,5} \d{3}$/', $code)) {
                         throw new ValidationException('Course code should look like "CSC 201".');
                     }
                     if ($title === '' || $credits < 1 || $credits > 6 || !in_array($semester, [1, 2], true)) {
