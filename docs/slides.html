@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SRMS Presentation</title>
+<style>
+@page { size: 13.333in 7.5in; margin: 0; }
+:root { --brand:#14532d; --ink:#17202b; --muted:#5d6876; --soft:#eef5f0; --line:#d4dbe2; --accent:#d9a400; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Segoe UI", Calibri, Arial, sans-serif; color: var(--ink); }
+.slide { width: 13.333in; height: 7.5in; padding: 0.55in 0.75in 0.5in; position: relative; overflow: hidden; page-break-after: always; display: flex; flex-direction: column; }
+.slide:last-of-type { page-break-after: auto; }
+.slide::after { content: attr(data-n); position: absolute; right: 0.5in; bottom: 0.3in; font-size: 11pt; color: var(--muted); }
+.slide::before { content: "SRMS · Software Engineering Project"; position: absolute; left: 0.75in; bottom: 0.3in; font-size: 10pt; color: var(--muted); }
+h2 { font-size: 30pt; margin: 0 0 0.25in; color: var(--brand); letter-spacing: -.01em; }
+h2 small { display: block; font-size: 13pt; color: var(--muted); font-weight: 500; letter-spacing: 0; margin-top: 4pt; }
+p, li { font-size: 17pt; line-height: 1.4; }
+ul { margin: 0; padding-left: 0.3in; } li { margin-bottom: 8pt; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4in; flex: 1; min-height: 0; }
+.cols.w { grid-template-columns: 1.3fr 1fr; }
+.box { background: var(--soft); border-radius: 10pt; padding: 16pt 20pt; }
+.box h3 { margin: 0 0 8pt; font-size: 16pt; color: var(--brand); }
+.box li, .box p { font-size: 14.5pt; }
+table { border-collapse: collapse; width: 100%; font-size: 13pt; }
+th, td { border-bottom: 1px solid var(--line); padding: 6pt 8pt; text-align: left; }
+th { color: var(--muted); font-weight: 600; font-size: 11.5pt; text-transform: uppercase; letter-spacing: .04em; }
+.diagram { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+.diagram .mermaid { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; }
+.diagram .mermaid svg { width: 100% !important; height: 100% !important; max-height: 5.2in; }
+img.shot { width: 100%; border: 1px solid var(--line); border-radius: 6pt; }
+.cap { font-size: 11pt; color: var(--muted); margin-top: 4pt; text-align: center; }
+.big { font-size: 64pt; font-weight: 700; color: var(--brand); line-height: 1; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25in; margin: 0.1in 0 0.3in; }
+.stat { background: var(--soft); border-radius: 10pt; padding: 16pt; }
+.stat span { display: block; font-size: 13pt; color: var(--muted); margin-top: 4pt; }
+.pass { color: #14632d; font-weight: 700; }
+.title { background: var(--brand); color: #fff; justify-content: center; }
+.title::before, .title::after { content: none; }
+.title h1 { font-size: 46pt; margin: 0 0 10pt; line-height: 1.1; }
+.title .sub { font-size: 20pt; opacity: .85; margin-bottom: 0.6in; }
+.title table { width: auto; font-size: 15pt; }
+.title td { border: none; padding: 3pt 24pt 3pt 0; color: #fff; }
+.title td:first-child { opacity: .7; }
+.title .bar { width: 1.2in; height: 6pt; background: var(--accent); margin-bottom: 0.35in; border-radius: 3pt; }
+.flow { display: flex; gap: 10pt; align-items: center; margin: 0.15in 0 0.3in; }
+.flow div { flex: 1; text-align: center; padding: 14pt 8pt; border-radius: 10pt; font-size: 15pt; font-weight: 600; }
+.flow .a { background: #fdf1d8; color: #8a5a00; } .flow .b { background: #e3ebfd; color: #1d4ed8; } .flow .c { background: #e6f2ea; color: #14532d; }
+.flow span { font-size: 22pt; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<section class="slide title">
+  <div class="bar"></div>
+  <h1>Student Result Management System</h1>
+  <div class="sub">Full Software Development Lifecycle Project</div>
+  <table>
+    <tr><td>Presented by</td><td>{{NAME}}</td></tr>
+    <tr><td>Index number</td><td>{{INDEX}}</td></tr>
+    <tr><td>Course</td><td>{{COURSE}}</td></tr>
+    <tr><td>Lecturer</td><td>{{LECTURER}}</td></tr>
+    <tr><td>Date</td><td>{{DATE}}</td></tr>
+  </table>
+</section>
+
+<section class="slide" data-n="2">
+  <h2>The problem<small>How results are handled today</small></h2>
+  <div class="cols">
+    <ul>
+      <li>Scores typed into personal Excel files, emailed and merged by hand</li>
+      <li>Totals, grades and GPAs calculated manually, so errors happen</li>
+      <li>Anyone with the file can change a grade, and nothing records it</li>
+      <li>Results take weeks to be released</li>
+      <li>Notice boards expose every student's grades</li>
+    </ul>
+    <div class="box">
+      <h3>Goal</h3>
+      <p>One secure system where lecturers enter scores once, grades are computed automatically, the exams office approves them, and each student privately sees only their own published results.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-n="3">
+  <h2>Objectives &amp; scope</h2>
+  <div class="cols">
+    <div class="box"><h3>Objectives</h3><ul>
+      <li>Manage students, lecturers, courses and enrolment</li>
+      <li>Validated score entry (CA /40, exam /60)</li>
+      <li>Automatic grade, GPA, CGPA and class of degree</li>
+      <li>Approval workflow before release</li>
+      <li>Private student access and a full audit trail</li></ul></div>
+    <div class="box"><h3>Stakeholders</h3><ul>
+      <li><strong>Exams officer (admin):</strong> approves and publishes</li>
+      <li><strong>Lecturers:</strong> enter and submit scores</li>
+      <li><strong>Students:</strong> view results and CGPA</li>
+      <li>Head of Department, IT unit, parents</li></ul>
+      <h3 style="margin-top:12pt">Out of scope</h3><p>Fees, SMS alerts, Excel import, signed PDF transcripts</p></div>
+  </div>
+</section>
+
+<section class="slide" data-n="4">
+  <h2>Process model: Agile Scrum<small>Adapted for a solo developer: four one-week sprints</small></h2>
+  <div class="cols w">
+    <table>
+      <tr><th>Sprint</th><th>Goal</th></tr>
+      <tr><td>0</td><td>Proposal, requirements, SRS, use cases</td></tr>
+      <tr><td>1</td><td>Architecture, UML diagrams, database design</td></tr>
+      <tr><td>2</td><td>Framework, sign-in, admin and lecturer modules</td></tr>
+      <tr><td>3</td><td>Student module, testing, defect fixes, report</td></tr>
+    </table>
+    <div class="box"><h3>Why Scrum?</h3><ul>
+      <li>Working software early, so feedback comes on real screens</li>
+      <li>Grading rules can change between sprints</li>
+      <li>Tests written in the same sprint as the code</li>
+      <li>Fixed deadline, so the most important features come first</li></ul></div>
+  </div>
+</section>
+
+<section class="slide" data-n="5">
+  <h2>Requirements<small>15 functional · 10 non-functional · 7 business rules (IEEE 830 SRS)</small></h2>
+  <div class="cols">
+    <div class="box"><h3>Key functional requirements</h3><ul>
+      <li>FR-08 Enter CA + exam, system computes grade</li>
+      <li>FR-10 Submit only when every student is scored</li>
+      <li>FR-11 Admin publishes or returns results</li>
+      <li>FR-12 Students see only published results</li>
+      <li>FR-13 CGPA and class of degree</li></ul></div>
+    <div class="box"><h3>Key non-functional requirements</h3><ul>
+      <li>bcrypt passwords; protection against SQL injection, XSS and CSRF</li>
+      <li>Role check on every page</li>
+      <li>Database integrity: foreign keys, unique keys, CHECK constraints</li>
+      <li>Works on phones; runs on XAMPP or shared hosting</li></ul></div>
+  </div>
+</section>
+
+<section class="slide" data-n="6">
+  <h2>Use cases</h2>
+  <div class="diagram"><pre class="mermaid">
+flowchart LR
+  A["Administrator"] --- UC2([Register students]) & UC3([Manage courses & lecturers]) & UC4([Enrol students]) & UC7([Review & publish results]) & UC9([Dashboard & audit log])
+  L["Lecturer"] --- UC5([Enter scores]) & UC6([Submit results])
+  S["Student"] --- UC8([View results & CGPA])
+  UC5 -. «include» .-> G([Compute grade])
+</pre></div>
+</section>
+
+<section class="slide" data-n="7">
+  <h2>Result life cycle<small>State diagram: the core rule of the system</small></h2>
+  <div class="flow"><div class="a">Draft<br><small>lecturer edits</small></div><span>→</span><div class="b">Submitted<br><small>locked</small></div><span>→</span><div class="c">Published<br><small>student sees it</small></div></div>
+  <ul>
+    <li>Lecturer can only submit when <strong>every</strong> student has a score</li>
+    <li>Submitted results are <strong>locked</strong>; the admin can return them for correction</li>
+    <li>Students only ever see <strong>published</strong> results</li>
+    <li>Every step is written to the <strong>audit log</strong></li>
+  </ul>
+</section>
+
+<section class="slide" data-n="8">
+  <h2>Architecture: layered MVC</h2>
+  <div class="cols w">
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  B[Browser] --> FC["Front Controller + Router<br/>(role check)"]
+  FC --> C[Controllers]
+  C --> V[Views]
+  C --> S["ResultService"]
+  S --> G["GradingScheme<br/>(Strategy)"]
+  S --> R["Repositories"]
+  C --> R
+  R --> D["Database (Singleton PDO)"]
+  D --> M[(MySQL 8)]
+</pre></div>
+    <div class="box"><h3>Design patterns</h3><ul>
+      <li><strong>MVC:</strong> separates logic, data and HTML</li>
+      <li><strong>Front Controller:</strong> one entry point, one access check</li>
+      <li><strong>Repository:</strong> all SQL in one place</li>
+      <li><strong>Singleton:</strong> one database connection</li>
+      <li><strong>Strategy:</strong> grading scale can be swapped without code changes</li></ul></div>
+  </div>
+</section>
+
+<section class="slide" data-n="9">
+  <h2>Database design<small>6 tables · Third Normal Form</small></h2>
+  <div class="diagram"><pre class="mermaid">
+erDiagram
+  USERS ||--o| STUDENTS : "has profile"
+  USERS ||--o{ COURSES : teaches
+  STUDENTS ||--o{ ENROLLMENTS : registers
+  COURSES ||--o{ ENROLLMENTS : has
+  ENROLLMENTS ||--o| RESULTS : produces
+  USERS ||--o{ AUDIT_LOG : performs
+</pre></div>
+</section>
+
+<section class="slide" data-n="10">
+  <h2>The working system: admin &amp; lecturer</h2>
+  <div class="cols">
+    <div><img class="shot" src="build/screens/admin-dashboard.png"><div class="cap">Admin dashboard: status of every course and recent activity</div></div>
+    <div><img class="shot" src="build/screens/lecturer-scores.png"><div class="cap">Lecturer score entry: grades computed on save</div></div>
+  </div>
+</section>
+
+<section class="slide" data-n="11">
+  <h2>The working system: approval &amp; student view</h2>
+  <div class="cols">
+    <div><img class="shot" src="build/screens/admin-review.png"><div class="cap">Admin reviews before publishing</div></div>
+    <div><img class="shot" src="build/screens/student-results.png"><div class="cap">Student sees semester GPA, CGPA and class</div></div>
+  </div>
+</section>
+
+<section class="slide" data-n="12">
+  <h2>Testing</h2>
+  <div class="stats">
+    <div class="stat"><div class="big">8</div><span>Unit tests: grading, GPA, validation</span></div>
+    <div class="stat"><div class="big">9</div><span>Integration tests: service + real schema</span></div>
+    <div class="stat"><div class="big">9</div><span>System tests: full app over HTTP</span></div>
+    <div class="stat"><div class="big pass">{{TEST_PASS}}/{{TEST_TOTAL}}</div><span>Passing</span></div>
+  </div>
+  <ul>
+    <li>Boundary-value tests on every grade band (79.5 → B+, 80 → A)</li>
+    <li>Security tests: wrong password, wrong role (403), missing CSRF token (419)</li>
+    <li>End to end: admin publishes, then the student can see the result</li>
+  </ul>
+</section>
+
+<section class="slide" data-n="13">
+  <h2>Defects found and fixed<small>Found by exploratory testing; each fix has a regression test</small></h2>
+  <table>
+    <tr><th>ID</th><th>Defect</th><th>Severity</th><th>Fix</th></tr>
+    <tr><td>DEF-01</td><td>"CSC201" and "CSC 201" created duplicate courses</td><td>Medium</td><td>Normalise course codes (IT-09)</td></tr>
+    <tr><td>DEF-02</td><td>"Submit" discarded scores the lecturer had just typed</td><td>High</td><td>Save the form before submitting (ST-09)</td></tr>
+    <tr><td>DEF-03</td><td>Audit log times one hour ahead</td><td>Low</td><td>Set the Africa/Accra time zone</td></tr>
+  </table>
+  <p style="margin-top:0.3in">3 found · 3 fixed · 0 open</p>
+</section>
+
+<section class="slide" data-n="14">
+  <h2>Project management</h2>
+  <div class="cols">
+    <div class="box"><h3>Plan</h3><ul>
+      <li>WBS: 6 work packages, about 70 hours</li>
+      <li>Gantt: 4 sprints, 26 Oct to 23 Nov</li>
+      <li>13 user stories, 58 story points done</li>
+      <li>Git history: {{COMMIT_COUNT}} commits on GitHub</li></ul></div>
+    <div class="box"><h3>Top risks &amp; mitigation</h3><ul>
+      <li><strong>Deadline slip:</strong> core features first, extras moved to backlog</li>
+      <li><strong>Wrong GPA:</strong> boundary-value unit tests</li>
+      <li><strong>Grade tampering:</strong> role checks, locking, audit log</li>
+      <li><strong>Code loss:</strong> Git + GitHub</li></ul></div>
+  </div>
+</section>
+
+<section class="slide" data-n="15">
+  <h2>Conclusion</h2>
+  <div class="cols">
+    <ul>
+      <li>All 7 objectives and 15 functional requirements met</li>
+      <li>Grades computed by one tested component</li>
+      <li>No result reaches students without approval</li>
+      <li>Every change is traceable</li>
+    </ul>
+    <div class="box"><h3>Future work</h3><ul>
+      <li>Excel/CSV score upload</li>
+      <li>SMS/email alerts when results are published</li>
+      <li>Signed PDF transcripts</li>
+      <li>Result analytics per course</li></ul>
+      <p style="margin-top:14pt"><strong>Source code:</strong> {{GITHUB}}</p></div>
+  </div>
+</section>
+
+<section class="slide title" data-n="16">
+  <div class="bar"></div>
+  <h1>Thank you</h1>
+  <div class="sub">Questions · Live demo</div>
+  <table>
+    <tr><td>Admin</td><td>admin / admin123</td></tr>
+    <tr><td>Lecturer</td><td>k.mensah / lecturer123</td></tr>
+    <tr><td>Student</td><td>UEB3201021 / student123</td></tr>
+  </table>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, theme: 'neutral', flowchart: { useMaxWidth: true }, er: { useMaxWidth: true },
+  themeVariables: { fontFamily: 'Segoe UI, Arial, sans-serif', fontSize: '16px' } });</script>
+</body>
+</html>

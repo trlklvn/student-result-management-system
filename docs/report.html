@@ -1,0 +1,1165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SRMS Project Report</title>
+<style>
+@page { size: A4; margin: 18mm 17mm 20mm 17mm; }
+:root { --ink:#1a2230; --muted:#5d6876; --line:#cfd6de; --brand:#14532d; --soft:#eef5f0; }
+* { box-sizing: border-box; }
+body { font: 10.5pt/1.5 "Segoe UI", Calibri, Arial, sans-serif; color: var(--ink); margin: 0; }
+h1 { font-size: 19pt; color: var(--brand); margin: 0 0 10pt; padding-bottom: 5pt; border-bottom: 2px solid var(--brand); page-break-before: always; }
+h2 { font-size: 13.5pt; margin: 16pt 0 6pt; color: var(--ink); page-break-after: avoid; }
+h3 { font-size: 11.5pt; margin: 12pt 0 4pt; page-break-after: avoid; }
+p { margin: 0 0 7pt; text-align: justify; }
+ul, ol { margin: 0 0 8pt; padding-left: 18pt; } li { margin-bottom: 2pt; }
+table { border-collapse: collapse; width: 100%; margin: 4pt 0 10pt; font-size: 9pt; page-break-inside: auto; }
+tr { page-break-inside: avoid; }
+th, td { border: 1px solid var(--line); padding: 4pt 6pt; text-align: left; vertical-align: top; }
+th { background: var(--soft); font-weight: 600; }
+caption { caption-side: bottom; font-size: 8.5pt; color: var(--muted); padding-top: 3pt; text-align: left; }
+code, pre { font-family: Consolas, "Courier New", monospace; font-size: 8.6pt; }
+pre.code { background: #f5f7f9; border: 1px solid var(--line); border-left: 3px solid var(--brand); padding: 7pt 9pt; white-space: pre-wrap; page-break-inside: avoid; margin: 4pt 0 10pt; }
+figure { margin: 6pt 0 12pt; text-align: center; page-break-inside: avoid; }
+figcaption { font-size: 8.5pt; color: var(--muted); margin-top: 4pt; }
+.mermaid { display: flex; justify-content: center; }
+.mermaid svg { max-width: 100% !important; max-height: 215mm; width: auto; height: auto; }
+figure.uc .mermaid svg { max-height: 190mm; }
+figure img { max-width: 100%; border: 1px solid var(--line); }
+.pass { color: #14632d; font-weight: 600; } .fail { color: #b42318; font-weight: 600; }
+.sev-h { color: #b42318; font-weight: 600; } .sev-m { color: #8a5a00; font-weight: 600; } .sev-l { color: #1d4ed8; font-weight: 600; }
+.note { background: var(--soft); border-left: 3px solid var(--brand); padding: 6pt 10pt; margin: 6pt 0 10pt; font-size: 9.5pt; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 10pt; }
+.two figure { margin: 0; }
+
+/* Cover */
+.cover { height: 250mm; display: flex; flex-direction: column; justify-content: space-between; text-align: center; padding: 18mm 0 8mm; }
+.cover .inst { font-size: 13pt; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--brand); }
+.cover .dept { color: var(--muted); }
+.cover .t1 { font-size: 26pt; font-weight: 700; line-height: 1.15; margin: 12mm 0 4mm; }
+.cover .t2 { font-size: 13pt; color: var(--muted); }
+.cover table { width: 70%; margin: 0 auto; font-size: 10.5pt; }
+.cover td { border: none; border-bottom: 1px solid var(--line); padding: 5pt; }
+.cover td:first-child { color: var(--muted); width: 38%; }
+.toc { list-style: none; padding: 0; columns: 1; }
+.toc li { padding: 3pt 0; border-bottom: 1px dotted var(--line); }
+.toc ol { list-style: none; padding-left: 16pt; font-size: 9.5pt; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="cover">
+  <div>
+    <div class="inst">{{INSTITUTION}}</div>
+    <div class="dept">{{DEPARTMENT}}</div>
+  </div>
+  <div>
+    <div class="t1">Student Result Management System</div>
+    <div class="t2">Full Software Development Lifecycle Project · Final Report</div>
+  </div>
+  <table>
+    <tr><td>Student</td><td>{{NAME}}</td></tr>
+    <tr><td>Index number</td><td>{{INDEX}}</td></tr>
+    <tr><td>Programme</td><td>{{PROGRAMME}}</td></tr>
+    <tr><td>Course</td><td>{{COURSE}}</td></tr>
+    <tr><td>Lecturer</td><td>{{LECTURER}}</td></tr>
+    <tr><td>Source code</td><td>{{GITHUB}}</td></tr>
+    <tr><td>Date</td><td>{{DATE}}</td></tr>
+  </table>
+</section>
+
+<!-- ============ CONTENTS ============ -->
+<h1 style="page-break-before: always">Contents</h1>
+<ul class="toc">
+  <li>Executive Summary</li>
+  <li>1. Project Proposal<ol><li>1.1 Background · 1.2 Problem Statement · 1.3 Objectives · 1.4 Scope · 1.5 Stakeholders</li></ol></li>
+  <li>2. Software Process Model<ol><li>2.1 Models Considered · 2.2 Selected Model: Agile Scrum (solo adaptation) · 2.3 Justification</li></ol></li>
+  <li>3. Requirements Engineering<ol><li>3.1 Elicitation · 3.2 Functional Requirements · 3.3 Non-functional Requirements · 3.4 Software Requirements Specification (SRS) · 3.5 Traceability Matrix</li></ol></li>
+  <li>4. System Modelling<ol><li>4.1 Use Case Diagram and Descriptions · 4.2 Class Diagrams · 4.3 Sequence Diagrams · 4.4 State Diagram · 4.5 Activity Diagram</li></ol></li>
+  <li>5. Architectural and Detailed Design<ol><li>5.1 Architecture · 5.2 Design Patterns · 5.3 Database Design (ER diagram, schema, data dictionary) · 5.4 Security Design</li></ol></li>
+  <li>6. Implementation<ol><li>6.1 Technology Stack · 6.2 Project Structure · 6.3 Key Code · 6.4 Screenshots · 6.5 Version Control</li></ol></li>
+  <li>7. Testing<ol><li>7.1 Test Plan · 7.2 Unit Test Cases · 7.3 Integration Test Cases · 7.4 System Test Cases · 7.5 Test Results · 7.6 Defect Report</li></ol></li>
+  <li>8. Project Management<ol><li>8.1 Work Breakdown Structure · 8.2 Gantt Chart · 8.3 Sprint Backlog · 8.4 Risk Management Plan</li></ol></li>
+  <li>9. Conclusion, Limitations and Future Work</li>
+  <li>References · Appendix A: Installation and User Guide</li>
+</ul>
+
+<h2>Executive Summary</h2>
+<p>This report documents the complete development of a <strong>Student Result Management System (SRMS)</strong>: a web application that lets a department record continuous assessment and examination scores, compute grades and grade point averages automatically, approve results before release, and publish them securely to students.</p>
+<p>The project followed an <strong>Agile Scrum</strong> process adapted for a single developer, run as four one-week sprints. Requirements were captured as 15 functional and 10 non-functional requirements and formalised in an IEEE 830-style SRS. The system was modelled with use case, class, sequence, state and activity diagrams, and built with <strong>PHP 8 and MySQL 8</strong> on a layered <strong>Model–View–Controller</strong> architecture using the Front Controller, Repository, Singleton and Strategy design patterns.</p>
+<p>A working prototype is delivered with source code under Git version control. Testing combined <strong>8 unit, 9 integration and 9 system tests</strong>: all 26 pass. Exploratory testing found <strong>3 defects</strong>; each was fixed, given a regression test and recorded in the defect report.</p>
+
+<!-- ============ 1. PROPOSAL ============ -->
+<h1>1. Project Proposal</h1>
+<h2>1.1 Background</h2>
+<p>In many Ghanaian tertiary institutions, examination results are still processed with spreadsheets passed between lecturers, heads of department and the examinations office. Lecturers type scores into personal Excel files, which are emailed or copied onto flash drives, merged by hand, checked, and finally printed and pinned on notice boards or uploaded as PDFs. Each hand-over is a chance for errors, delays and unauthorised changes.</p>
+
+<h2>1.2 Problem Statement</h2>
+<p>The current manual process for managing student results has five main problems:</p>
+<ol>
+  <li><strong>Calculation errors:</strong> totals, letter grades and GPAs are computed by hand or with copied spreadsheet formulas, so mistakes are common and hard to spot.</li>
+  <li><strong>No control over changes:</strong> once a spreadsheet leaves the lecturer, anyone can edit it, and nothing records who changed what.</li>
+  <li><strong>Slow release:</strong> students wait weeks for results to be collated, approved and posted.</li>
+  <li><strong>Privacy:</strong> results on public notice boards expose every student's grades to everyone.</li>
+  <li><strong>No single source of truth:</strong> transcripts must be rebuilt from many separate files.</li>
+</ol>
+<p>The department needs a central system in which lecturers enter scores once, grades are computed consistently, the examinations officer approves results before release, and each student privately sees only their own published results.</p>
+
+<h2>1.3 Objectives</h2>
+<p><strong>General objective:</strong> to design and develop a secure web-based system that manages student examination results from score entry to publication.</p>
+<p><strong>Specific objectives:</strong></p>
+<ol>
+  <li>Let administrators register students, lecturers and courses, and enrol students in courses.</li>
+  <li>Let lecturers enter CA and exam scores only for courses assigned to them, with validation of score ranges.</li>
+  <li>Compute totals, letter grades, grade points, semester GPA, CGPA and class of degree automatically and consistently.</li>
+  <li>Enforce an approval workflow (draft → submitted → published) so that no result reaches students without approval.</li>
+  <li>Let each student securely view only their own published results.</li>
+  <li>Keep an audit trail of every important action.</li>
+  <li>Verify correctness through automated unit, integration and system testing.</li>
+</ol>
+
+<h2>1.4 Scope</h2>
+<table>
+  <tr><th style="width:50%">In scope</th><th>Out of scope (future work)</th></tr>
+  <tr><td>
+    <ul><li>User authentication with three roles: admin, lecturer, student</li>
+    <li>Student, lecturer and course registration</li>
+    <li>Course enrolment</li>
+    <li>Score entry, automatic grading and GPA/CGPA calculation</li>
+    <li>Result approval workflow and publication</li>
+    <li>Student result and transcript view</li>
+    <li>Admin dashboard and audit log</li></ul>
+  </td><td>
+    <ul><li>Fee payment and registration clearance</li>
+    <li>SMS or email notifications</li>
+    <li>Bulk import of scores from Excel</li>
+    <li>Official signed PDF transcripts</li>
+    <li>Integration with the university's central student information system</li>
+    <li>Mobile app</li></ul>
+  </td></tr>
+</table>
+
+<h2>1.5 Stakeholders</h2>
+<table>
+  <tr><th>Stakeholder</th><th>Role in the system</th><th>Main interest</th></tr>
+  <tr><td>Examinations officer / Registry (Administrator)</td><td>Primary user</td><td>Accurate, approved results released on time; control over publication</td></tr>
+  <tr><td>Lecturers</td><td>Primary user</td><td>Quick score entry; no manual grade calculations</td></tr>
+  <tr><td>Students</td><td>Primary user</td><td>Private, fast access to their results and CGPA</td></tr>
+  <tr><td>Head of Department</td><td>Secondary</td><td>Oversight of result quality and deadlines</td></tr>
+  <tr><td>IT / Systems unit</td><td>Support</td><td>A system that is easy to host, secure and maintain</td></tr>
+  <tr><td>Parents / sponsors</td><td>Indirect</td><td>Timely information on academic performance</td></tr>
+  <tr><td>Project supervisor (lecturer)</td><td>Project oversight</td><td>A complete and well-documented software engineering process</td></tr>
+</table>
+
+<!-- ============ 2. PROCESS MODEL ============ -->
+<h1>2. Software Process Model</h1>
+<h2>2.1 Models Considered</h2>
+<table>
+  <tr><th>Model</th><th>Strengths</th><th>Weaknesses for this project</th></tr>
+  <tr><td>Waterfall</td><td>Simple; clear phases and documents</td><td>Nothing works until late; requirement changes are expensive; risk found late</td></tr>
+  <tr><td>Spiral</td><td>Strong focus on risk analysis</td><td>Heavy process and documentation for a small, low-risk system; suited to large projects</td></tr>
+  <tr><td>V-Model</td><td>Each phase paired with a test level</td><td>As rigid as Waterfall; no early working software</td></tr>
+  <tr><td><strong>Agile Scrum</strong></td><td>Short iterations, working software every sprint, feedback welcomed, testing throughout</td><td>Less upfront documentation, which we compensate for by writing documents inside each sprint</td></tr>
+</table>
+
+<h2>2.2 Selected Model: Agile Scrum, adapted for a solo developer</h2>
+<p>The project used <strong>Scrum</strong> with four one-week sprints. Because there is one developer, the Scrum roles were adapted:</p>
+<ul>
+  <li><strong>Product Owner:</strong> the project supervisor and the examinations office, represented by the developer through interviews and document analysis.</li>
+  <li><strong>Scrum Master and Development Team:</strong> the developer.</li>
+  <li><strong>Artefacts:</strong> a product backlog of user stories, a sprint backlog for each sprint (Section 8.3), and a working increment at the end of each sprint.</li>
+  <li><strong>Events:</strong> sprint planning at the start of each week, a short daily self-review, a sprint review demo to the supervisor, and a retrospective note.</li>
+</ul>
+<figure><pre class="mermaid">
+flowchart LR
+  PB[(Product backlog<br/>user stories)] --> SP[Sprint planning]
+  SP --> SB[Sprint backlog]
+  SB --> DEV["1-week sprint<br/>design · code · test"]
+  DEV --> INC[Working increment]
+  INC --> REV[Sprint review<br/>demo to supervisor]
+  REV --> RET[Retrospective]
+  RET -->|next sprint| SP
+  REV -.feedback.-> PB
+</pre><figcaption>Figure 2.1 – Scrum cycle as applied in this project</figcaption></figure>
+
+<h2>2.3 Justification</h2>
+<ol>
+  <li><strong>Early working software:</strong> login and admin features worked at the end of Sprint 2, so the supervisor could give feedback on real screens instead of documents only.</li>
+  <li><strong>Changing requirements:</strong> grading scales and approval rules differ between institutions. Agile let these details change between sprints; the Strategy pattern (Section 5.2) keeps the grading scale replaceable.</li>
+  <li><strong>Testing throughout:</strong> automated tests were written in the same sprint as the code, which caught defects early (Section 7.6).</li>
+  <li><strong>Fixed deadline, flexible scope:</strong> with a fixed submission date, Scrum's priority-ordered backlog makes sure the most valuable features (score entry, grading, publication) are done first, while low-priority items (bulk import, notifications) move to future work.</li>
+  <li><strong>Documentation still produced:</strong> each sprint's definition of done included the matching documents, which gives the documentation benefits of Waterfall without its rigidity.</li>
+</ol>
+
+<!-- ============ 3. REQUIREMENTS ============ -->
+<h1>3. Requirements Engineering</h1>
+<h2>3.1 Requirements Elicitation</h2>
+<ul>
+  <li><strong>Interviews</strong> with a lecturer and an examinations office staff member on how results are processed today.</li>
+  <li><strong>Document analysis</strong> of an existing results spreadsheet, the university grading scale and a sample transcript.</li>
+  <li><strong>Observation</strong> of how scores are collated at the end of semester.</li>
+  <li><strong>Prototyping:</strong> early screens were shown during sprint reviews to confirm requirements.</li>
+</ul>
+
+<h2>3.2 Functional Requirements</h2>
+<table>
+  <tr><th style="width:9%">ID</th><th>Requirement: the system shall…</th><th style="width:10%">Priority</th></tr>
+  <tr><td>FR-01</td><td>allow users to sign in with a username and password and take them to the home page for their role.</td><td>Must</td></tr>
+  <tr><td>FR-02</td><td>allow users to sign out, ending their session.</td><td>Must</td></tr>
+  <tr><td>FR-03</td><td>allow the admin to register a student (index number, name, programme, level, initial password) with a unique index number.</td><td>Must</td></tr>
+  <tr><td>FR-04</td><td>allow the admin to register a lecturer account.</td><td>Must</td></tr>
+  <tr><td>FR-05</td><td>allow the admin to create a course (code, title, credit hours, semester, academic year, lecturer), with a unique course code.</td><td>Must</td></tr>
+  <tr><td>FR-06</td><td>allow the admin to enrol one or more students in a course.</td><td>Must</td></tr>
+  <tr><td>FR-07</td><td>show a lecturer only the courses assigned to them, with the progress of each.</td><td>Must</td></tr>
+  <tr><td>FR-08</td><td>allow a lecturer to enter a CA score (0–40) and exam score (0–60) for each enrolled student and compute the total, letter grade and grade point.</td><td>Must</td></tr>
+  <tr><td>FR-09</td><td>save scores as drafts that the lecturer can edit until submission.</td><td>Must</td></tr>
+  <tr><td>FR-10</td><td>allow a lecturer to submit a course's results for approval only when every enrolled student has a score, and lock them after submission.</td><td>Must</td></tr>
+  <tr><td>FR-11</td><td>allow the admin to review submitted results and either publish them or return them to the lecturer.</td><td>Must</td></tr>
+  <tr><td>FR-12</td><td>show each student only their own published results, grouped by semester with the semester GPA.</td><td>Must</td></tr>
+  <tr><td>FR-13</td><td>compute the student's CGPA and class of degree.</td><td>Should</td></tr>
+  <tr><td>FR-14</td><td>provide an admin dashboard with totals and the result status of every course.</td><td>Should</td></tr>
+  <tr><td>FR-15</td><td>record important actions (sign-in, score changes, submission, publication) in an audit log.</td><td>Should</td></tr>
+</table>
+
+<h2>3.3 Non-functional Requirements</h2>
+<table>
+  <tr><th style="width:9%">ID</th><th style="width:16%">Category</th><th>Requirement</th></tr>
+  <tr><td>NFR-01</td><td>Security</td><td>Passwords shall be stored only as salted bcrypt hashes.</td></tr>
+  <tr><td>NFR-02</td><td>Security</td><td>The system shall prevent SQL injection (prepared statements), XSS (output escaping) and CSRF (tokens on every form).</td></tr>
+  <tr><td>NFR-03</td><td>Security</td><td>Every page shall check the user's role; users shall not reach other roles' pages.</td></tr>
+  <tr><td>NFR-04</td><td>Performance</td><td>Pages shall load in under 2 seconds for a department of 1,000 students on standard shared hosting.</td></tr>
+  <tr><td>NFR-05</td><td>Usability</td><td>A new lecturer shall be able to enter scores without training; error messages shall say what is wrong and how to fix it; pages shall work on a phone screen.</td></tr>
+  <tr><td>NFR-06</td><td>Reliability / Integrity</td><td>The database shall enforce integrity with primary, foreign and unique keys and CHECK constraints; multi-step writes shall use transactions.</td></tr>
+  <tr><td>NFR-07</td><td>Maintainability</td><td>Code shall follow a layered MVC structure and be covered by automated tests.</td></tr>
+  <tr><td>NFR-08</td><td>Portability</td><td>The system shall run on any PHP 8.1+ server with MySQL 8 (e.g. XAMPP, shared hosting).</td></tr>
+  <tr><td>NFR-09</td><td>Auditability</td><td>Every change to results shall be traceable to a user and time.</td></tr>
+  <tr><td>NFR-10</td><td>Availability</td><td>The system shall be accessible from any modern web browser without installing software.</td></tr>
+</table>
+
+<h2>3.4 Software Requirements Specification (SRS)</h2>
+<p>The SRS follows the structure of IEEE Std 830-1998.</p>
+<h3>3.4.1 Introduction</h3>
+<p><strong>Purpose:</strong> this SRS defines the requirements of the Student Result Management System, version 1.0, for the developer, the supervisor and the examinations office.<br>
+<strong>Scope:</strong> SRMS manages examination results from score entry through approval to publication, as described in Section 1.4.<br>
+<strong>Definitions:</strong> <em>CA</em> – continuous assessment (out of 40); <em>Exam</em> – final examination (out of 60); <em>GPA</em> – grade point average for one semester; <em>CGPA</em> – cumulative GPA across all semesters; <em>Enrolment</em> – the registration of a student in a course; <em>Publish</em> – release approved results to students.</p>
+<h3>3.4.2 Overall Description</h3>
+<p><strong>Product perspective:</strong> a stand-alone web application with a browser client, a PHP application server and a MySQL database (Section 5.1).<br>
+<strong>Product functions:</strong> user and course administration, enrolment, score entry and grading, approval workflow, result publication, transcript and GPA computation, auditing.</p>
+<table>
+  <tr><th>User class</th><th>Characteristics</th><th>Functions used</th></tr>
+  <tr><td>Administrator</td><td>Examinations officer; moderate IT skills; few users</td><td>FR-03 to FR-06, FR-11, FR-14</td></tr>
+  <tr><td>Lecturer</td><td>Academic staff; basic IT skills; dozens of users</td><td>FR-07 to FR-10</td></tr>
+  <tr><td>Student</td><td>Hundreds to thousands of users, often on phones</td><td>FR-12, FR-13</td></tr>
+</table>
+<p><strong>Operating environment:</strong> Apache or any PHP 8.1+ web server, MySQL 8, modern browsers (Chrome, Edge, Firefox, mobile browsers).<br>
+<strong>Design constraints:</strong> PHP and MySQL as required by the course; must run on low-cost hosting; no paid libraries.<br>
+<strong>Assumptions:</strong> the institution uses a CA/40 + Exam/60 split and a 4.0 grading scale (both configurable); each course has one lecturer per semester.</p>
+<h3>3.4.3 Specific Requirements</h3>
+<p><strong>External interfaces:</strong> a browser-based user interface (HTML/CSS forms and tables); a database interface through PDO; no hardware interfaces; HTTP(S) communication.<br>
+<strong>Functional requirements:</strong> FR-01 to FR-15 (Section 3.2).<br>
+<strong>Performance, security and quality attributes:</strong> NFR-01 to NFR-10 (Section 3.3).<br>
+<strong>Business rules:</strong></p>
+<table>
+  <tr><th style="width:9%">ID</th><th>Rule</th></tr>
+  <tr><td>BR-01</td><td>Total = CA + Exam; CA ∈ [0, 40], Exam ∈ [0, 60].</td></tr>
+  <tr><td>BR-02</td><td>Grades: A 80–100 (4.0), B+ 75–79 (3.5), B 70–74 (3.0), C+ 65–69 (2.5), C 60–64 (2.0), D+ 55–59 (1.5), D 50–54 (1.0), F 0–49 (0.0).</td></tr>
+  <tr><td>BR-03</td><td>GPA = Σ(grade point × credit hours) ÷ Σ(credit hours).</td></tr>
+  <tr><td>BR-04</td><td>Class: First ≥ 3.60, Second Upper ≥ 3.00, Second Lower ≥ 2.50, Third ≥ 2.00, Pass ≥ 1.00, otherwise Fail.</td></tr>
+  <tr><td>BR-05</td><td>A lecturer may only enter scores for courses assigned to them.</td></tr>
+  <tr><td>BR-06</td><td>Submitted or published results cannot be edited; only the admin can return submitted results to draft.</td></tr>
+  <tr><td>BR-07</td><td>Students only ever see results with status "published".</td></tr>
+</table>
+
+<h2>3.5 Requirements Traceability Matrix</h2>
+<table>
+  <tr><th>Requirement</th><th>Use case</th><th>Design element</th><th>Test cases</th></tr>
+  <tr><td>FR-01, FR-02</td><td>UC-01</td><td>AuthController, Auth</td><td>ST-01, ST-02, ST-06</td></tr>
+  <tr><td>FR-03</td><td>UC-02</td><td>AdminController::students, StudentRepository</td><td>ST-08, IT-07</td></tr>
+  <tr><td>FR-04, FR-05</td><td>UC-03</td><td>AdminController::courses, CourseRepository</td><td>IT-09</td></tr>
+  <tr><td>FR-06</td><td>UC-04</td><td>EnrollmentRepository</td><td>IT-07</td></tr>
+  <tr><td>FR-07, FR-08, FR-09</td><td>UC-05</td><td>LecturerController, ResultService::recordScores, StandardGradingScheme</td><td>UT-01 – UT-06, IT-01, IT-02, ST-07</td></tr>
+  <tr><td>FR-10</td><td>UC-06</td><td>ResultService::submit</td><td>IT-03, IT-04, ST-09</td></tr>
+  <tr><td>FR-11</td><td>UC-07</td><td>ResultService::publish / returnToDraft</td><td>IT-04, IT-06, ST-06</td></tr>
+  <tr><td>FR-12, FR-13</td><td>UC-08</td><td>ResultService::transcript, gpa</td><td>UT-04, UT-07, UT-08, IT-05, ST-05</td></tr>
+  <tr><td>FR-14</td><td>UC-09</td><td>AdminController::dashboard</td><td>ST-01</td></tr>
+  <tr><td>FR-15, NFR-09</td><td>UC-09</td><td>AuditRepository</td><td>IT-08</td></tr>
+  <tr><td>NFR-02</td><td>All</td><td>Controller::verifyCsrf, e(), PDO prepared statements</td><td>ST-04</td></tr>
+  <tr><td>NFR-03</td><td>All</td><td>Router role check</td><td>ST-03</td></tr>
+</table>
+
+<!-- ============ 4. MODELLING ============ -->
+<h1>4. System Modelling</h1>
+<h2>4.1 Use Case Diagram</h2>
+<figure class="uc"><pre class="mermaid">
+flowchart LR
+  A["Administrator<br/>«actor»"]
+  L["Lecturer<br/>«actor»"]
+  S["Student<br/>«actor»"]
+  subgraph SRMS [Student Result Management System]
+    direction TB
+    UC1([UC-01 Sign in / Sign out])
+    UC2([UC-02 Register student])
+    UC3([UC-03 Manage courses & lecturers])
+    UC4([UC-04 Enrol students])
+    UC9([UC-09 View dashboard & audit log])
+    UC7([UC-07 Review & publish results])
+    UC7b([Return results to lecturer])
+    UC5([UC-05 Enter scores])
+    UCg([Compute grade])
+    UC6([UC-06 Submit results])
+    UC8([UC-08 View results & CGPA])
+  end
+  A --- UC1 & UC2 & UC3 & UC4 & UC7 & UC9
+  L --- UC1 & UC5 & UC6
+  S --- UC1 & UC8
+  UC5 -. «include» .-> UCg
+  UC7b -. «extend» .-> UC7
+</pre><figcaption>Figure 4.1 – Use case diagram</figcaption></figure>
+
+<h3>Use case descriptions</h3>
+<table>
+  <tr><th style="width:9%">ID</th><th style="width:22%">Use case</th><th style="width:13%">Actor</th><th>Summary</th></tr>
+  <tr><td>UC-01</td><td>Sign in / Sign out</td><td>All</td><td>User enters credentials; system verifies them and opens the role's home page.</td></tr>
+  <tr><td>UC-02</td><td>Register student</td><td>Admin</td><td>Admin enters student details; system checks the index number is unique and creates the account and student record in one transaction.</td></tr>
+  <tr><td>UC-03</td><td>Manage courses &amp; lecturers</td><td>Admin</td><td>Admin adds lecturers and courses and assigns a lecturer to each course.</td></tr>
+  <tr><td>UC-04</td><td>Enrol students</td><td>Admin</td><td>Admin selects a course and students; system creates enrolments, ignoring duplicates.</td></tr>
+  <tr><td>UC-05</td><td>Enter scores</td><td>Lecturer</td><td>Lecturer enters CA and exam scores; system validates them and computes grades.</td></tr>
+  <tr><td>UC-06</td><td>Submit results</td><td>Lecturer</td><td>Lecturer submits a complete class list for approval; results are locked.</td></tr>
+  <tr><td>UC-07</td><td>Review &amp; publish results</td><td>Admin</td><td>Admin checks submitted results and publishes them, or returns them for correction.</td></tr>
+  <tr><td>UC-08</td><td>View results &amp; CGPA</td><td>Student</td><td>Student sees published results by semester with GPA, CGPA and class.</td></tr>
+  <tr><td>UC-09</td><td>View dashboard &amp; audit log</td><td>Admin</td><td>Admin sees totals, course status and recent activity.</td></tr>
+</table>
+
+<h3>Detailed description – UC-05 Enter Scores</h3>
+<table>
+  <tr><th style="width:24%">Primary actor</th><td>Lecturer</td></tr>
+  <tr><th>Preconditions</th><td>Lecturer is signed in; the course is assigned to them; students are enrolled.</td></tr>
+  <tr><th>Main flow</th><td>1. Lecturer opens <em>My courses</em> and selects a course.<br>2. System shows the class list with any saved scores.<br>3. Lecturer types CA and exam scores and clicks <em>Save as draft</em>.<br>4. System checks the ranges (BR-01), computes total, grade and grade point (BR-02) and saves each result as <em>draft</em>.<br>5. System records the action in the audit log and shows "Scores saved as draft".</td></tr>
+  <tr><th>Alternative flows</th><td>4a. A score is out of range or not a number → system shows e.g. "CA score must be between 0 and 40" and saves nothing.<br>4b. A row is left blank → it is skipped and stays "no score".</td></tr>
+  <tr><th>Exceptions</th><td>Course not assigned to the lecturer → "You can only manage results for courses assigned to you" (BR-05). Results already submitted → inputs are locked (BR-06).</td></tr>
+  <tr><th>Postconditions</th><td>Results stored with status <em>draft</em>; audit entry created.</td></tr>
+</table>
+
+<h3>Detailed description – UC-06 Submit Results</h3>
+<table>
+  <tr><th style="width:24%">Primary actor</th><td>Lecturer</td></tr>
+  <tr><th>Preconditions</th><td>UC-05 has been carried out for the course.</td></tr>
+  <tr><th>Main flow</th><td>1. Lecturer clicks <em>Submit for approval</em>.<br>2. System first saves any scores typed in the form.<br>3. System checks that every enrolled student has a score.<br>4. System changes all draft results to <em>submitted</em>, locks them and logs the action.</td></tr>
+  <tr><th>Alternative flows</th><td>3a. Some students have no score → "N student(s) still have no score. Enter all scores before submitting."</td></tr>
+  <tr><th>Postconditions</th><td>Results are <em>submitted</em> and appear as "Awaiting approval" on the admin dashboard.</td></tr>
+</table>
+
+<h3>Detailed description – UC-07 Review &amp; Publish Results</h3>
+<table>
+  <tr><th style="width:24%">Primary actor</th><td>Administrator</td></tr>
+  <tr><th>Preconditions</th><td>A course has submitted results.</td></tr>
+  <tr><th>Main flow</th><td>1. Admin opens a course marked "Awaiting approval" from the dashboard.<br>2. System shows every student's scores and grades.<br>3. Admin clicks <em>Publish results</em>.<br>4. System changes submitted results to <em>published</em> and logs the action.</td></tr>
+  <tr><th>Extension</th><td>3a. Admin clicks <em>Return to lecturer</em> → results go back to <em>draft</em> so the lecturer can correct them.</td></tr>
+  <tr><th>Postconditions</th><td>Students can see the results (UC-08).</td></tr>
+</table>
+
+<h3>Detailed description – UC-08 View Results &amp; CGPA</h3>
+<table>
+  <tr><th style="width:24%">Primary actor</th><td>Student</td></tr>
+  <tr><th>Main flow</th><td>1. Student signs in with their index number.<br>2. System loads only <em>published</em> results for that student (BR-07).<br>3. System groups them by semester and computes each GPA, the CGPA and the class (BR-03, BR-04).<br>4. System shows the profile, CGPA, class and a table per semester.</td></tr>
+  <tr><th>Alternative flows</th><td>2a. Nothing published yet → "No results have been published for you yet."</td></tr>
+</table>
+
+<h2>4.2 Class Diagrams</h2>
+<h3>Domain (analysis) class diagram</h3>
+<figure><pre class="mermaid">
+classDiagram
+  direction LR
+  class User {
+    +id: int
+    +username: string
+    +passwordHash: string
+    +fullName: string
+    +role: Role
+  }
+  class Student {
+    +id: int
+    +indexNumber: string
+    +programme: string
+    +level: int
+  }
+  class Course {
+    +id: int
+    +code: string
+    +title: string
+    +creditHours: int
+    +semester: int
+    +academicYear: string
+  }
+  class Enrollment {
+    +id: int
+  }
+  class Result {
+    +caScore: decimal
+    +examScore: decimal
+    +total: decimal
+    +grade: string
+    +gradePoint: decimal
+    +status: Status
+    +updatedAt: datetime
+  }
+  class AuditLog {
+    +action: string
+    +details: string
+    +createdAt: datetime
+  }
+  User "1" -- "0..1" Student : is a
+  User "1" -- "0..*" Course : teaches
+  Student "1" -- "0..*" Enrollment
+  Course "1" -- "0..*" Enrollment
+  Enrollment "1" -- "0..1" Result
+  User "1" -- "0..*" AuditLog : performs
+</pre><figcaption>Figure 4.2 – Domain model</figcaption></figure>
+
+<h3>Design class diagram</h3>
+<figure><pre class="mermaid">
+classDiagram
+  class Router {
+    -routes: array
+    +add(route, controller, method, role)
+    +dispatch(route)
+  }
+  class Controller {
+    &lt;&lt;abstract&gt;&gt;
+    #render(view, data)
+    #redirect(route)
+    #flash(type, msg)
+    #verifyCsrf()
+  }
+  class AdminController {
+    +dashboard()
+    +students()
+    +courses()
+    +review()
+  }
+  class LecturerController {
+    +courses()
+    +scores()
+  }
+  class StudentController {
+    +results()
+  }
+  class AuthController {
+    +login()
+    +logout()
+  }
+  class ResultService {
+    +compute(ca, exam) array
+    +recordScores(lecturerId, courseId, scores) int
+    +submit(lecturerId, courseId) int
+    +publish(adminId, courseId) int
+    +returnToDraft(adminId, courseId) int
+    +transcript(studentId) array
+    +gpa(courses)$ array
+  }
+  class GradingScheme {
+    &lt;&lt;interface&gt;&gt;
+    +grade(total) array
+    +classify(cgpa) string
+  }
+  class StandardGradingScheme {
+    -BANDS
+    +grade(total) array
+    +classify(cgpa) string
+  }
+  class Repository {
+    &lt;&lt;abstract&gt;&gt;
+    #db: PDO
+    #one()
+    #all()
+    #run()
+    #insert()
+  }
+  class ResultRepository {
+    +save()
+    +changeStatusForCourse()
+    +statusSummary()
+    +publishedForStudent()
+  }
+  class CourseRepository {
+    +create()
+    +listAll()
+    +byLecturer()
+    +normalizeCode()$
+  }
+  class EnrollmentRepository {
+    +enroll()
+    +forCourse()
+    +belongsToCourse()
+  }
+  class UserRepository {
+    +findByUsername()
+    +create()
+    +lecturers()
+  }
+  class StudentRepository {
+    +create()
+    +listAll()
+    +findByUserId()
+  }
+  class AuditRepository {
+    +log()
+    +recent()
+  }
+  class Database {
+    &lt;&lt;singleton&gt;&gt;
+    -pdo: PDO$
+    +connection()$ PDO
+  }
+  class Auth {
+    +attempt(user, pass)$ bool
+    +user()$ array
+    +hasRole(role)$ bool
+  }
+  Controller <|-- AdminController
+  Controller <|-- LecturerController
+  Controller <|-- StudentController
+  Controller <|-- AuthController
+  Router ..> Controller : dispatches
+  Router ..> Auth : checks role
+  LecturerController --> ResultService
+  AdminController --> ResultService
+  StudentController --> ResultService
+  ResultService --> GradingScheme
+  GradingScheme <|.. StandardGradingScheme
+  ResultService --> ResultRepository
+  ResultService --> EnrollmentRepository
+  ResultService --> CourseRepository
+  ResultService --> AuditRepository
+  Repository <|-- ResultRepository
+  Repository <|-- CourseRepository
+  Repository <|-- EnrollmentRepository
+  Repository <|-- UserRepository
+  Repository <|-- StudentRepository
+  Repository <|-- AuditRepository
+  Repository ..> Database
+</pre><figcaption>Figure 4.3 – Design class diagram (main classes)</figcaption></figure>
+
+<h2>4.3 Sequence Diagrams</h2>
+<h3>SD-1: User signs in</h3>
+<figure><pre class="mermaid">
+sequenceDiagram
+  actor U as User
+  participant FC as index.php (Front Controller)
+  participant R as Router
+  participant AC as AuthController
+  participant A as Auth
+  participant UR as UserRepository
+  participant DB as MySQL
+  U->>FC: POST ?r=auth/login (username, password, csrf)
+  FC->>R: dispatch("auth/login")
+  R->>AC: login()
+  AC->>AC: verifyCsrf()
+  AC->>A: attempt(username, password)
+  A->>UR: findByUsername(username)
+  UR->>DB: SELECT * FROM users WHERE username = ?
+  DB-->>UR: user row
+  UR-->>A: user
+  A->>A: password_verify(), session_regenerate_id()
+  A-->>AC: true
+  AC->>AC: audit log "login"
+  AC-->>U: 302 redirect to role home page
+</pre><figcaption>Figure 4.4 – Sign-in sequence</figcaption></figure>
+
+<h3>SD-2: Lecturer enters and submits scores</h3>
+<figure><pre class="mermaid">
+sequenceDiagram
+  actor L as Lecturer
+  participant LC as LecturerController
+  participant RS as ResultService
+  participant GS as StandardGradingScheme
+  participant RR as ResultRepository
+  participant AR as AuditRepository
+  L->>LC: POST scores[] + action=submit
+  LC->>RS: recordScores(lecturerId, courseId, scores)
+  RS->>RS: ownedCourse() check (BR-05)
+  loop each student row
+    RS->>RS: compute(ca, exam) – validate ranges
+    RS->>GS: grade(total)
+    GS-->>RS: {grade, point}
+    RS->>RR: save(enrollmentId, ca, exam, total, grade, point)
+  end
+  RS->>AR: log("scores_saved")
+  LC->>RS: submit(lecturerId, courseId)
+  RS->>RR: statusSummary(courseId)
+  alt some students have no score
+    RS-->>LC: ValidationException
+    LC-->>L: error message
+  else all scored
+    RS->>RR: changeStatusForCourse(draft → submitted)
+    RS->>AR: log("results_submitted")
+    LC-->>L: "N result(s) submitted for approval"
+  end
+</pre><figcaption>Figure 4.5 – Score entry and submission sequence</figcaption></figure>
+
+<h3>SD-3: Administrator publishes results</h3>
+<figure><pre class="mermaid">
+sequenceDiagram
+  actor A as Administrator
+  participant AC as AdminController
+  participant RS as ResultService
+  participant CR as CourseRepository
+  participant RR as ResultRepository
+  participant AR as AuditRepository
+  A->>AC: GET ?r=admin/review&course=4
+  AC->>RR: statusSummary(4)
+  AC-->>A: class list with grades
+  A->>AC: POST action=publish
+  AC->>RS: publish(adminId, 4)
+  RS->>CR: find(4)
+  RS->>RR: changeStatusForCourse(submitted → published)
+  RR-->>RS: rows changed = 6
+  RS->>AR: log("results_published")
+  RS-->>AC: 6
+  AC-->>A: "6 result(s) published"
+</pre><figcaption>Figure 4.6 – Publish results sequence</figcaption></figure>
+
+<h3>SD-4: Student views results and CGPA</h3>
+<figure><pre class="mermaid">
+sequenceDiagram
+  actor S as Student
+  participant SC as StudentController
+  participant SR as StudentRepository
+  participant RS as ResultService
+  participant RR as ResultRepository
+  participant GS as StandardGradingScheme
+  S->>SC: GET ?r=student/results
+  SC->>SR: findByUserId(userId)
+  SR-->>SC: student
+  SC->>RS: transcript(studentId)
+  RS->>RR: publishedForStudent(studentId)
+  RR-->>RS: published rows only
+  RS->>RS: group by semester, gpa() per semester, CGPA
+  RS->>GS: classify(cgpa)
+  GS-->>RS: "First Class"
+  RS-->>SC: transcript
+  SC-->>S: results page
+</pre><figcaption>Figure 4.7 – View results sequence</figcaption></figure>
+
+<h2>4.4 State Diagram – Result life cycle</h2>
+<figure><pre class="mermaid">
+stateDiagram-v2
+  [*] --> NoScore : student enrolled
+  NoScore --> Draft : lecturer saves scores
+  Draft --> Draft : lecturer edits scores
+  Draft --> Submitted : lecturer submits (all scored)
+  Submitted --> Draft : admin returns for correction
+  Submitted --> Published : admin publishes
+  Published --> [*]
+  note right of Submitted : locked for lecturer
+  note right of Published : visible to student
+</pre><figcaption>Figure 4.8 – State diagram of a Result</figcaption></figure>
+
+<h2>4.5 Activity Diagram – End-of-semester result processing</h2>
+<figure><pre class="mermaid">
+flowchart TD
+  start((Start)) --> a1[Admin registers students, courses and enrolments]
+  a1 --> l1[Lecturer opens assigned course]
+  l1 --> l2[Enter CA and exam scores]
+  l2 --> d1{Scores valid?}
+  d1 -- No --> l3[Show error message] --> l2
+  d1 -- Yes --> l4[System computes total, grade, point<br/>and saves draft]
+  l4 --> d2{All students scored?}
+  d2 -- No --> l2
+  d2 -- Yes --> l5[Lecturer submits results]
+  l5 --> a2[Admin reviews results]
+  a2 --> d3{Results correct?}
+  d3 -- No --> a3[Return to lecturer] --> l2
+  d3 -- Yes --> a4[Publish results]
+  a4 --> s1[Student views results, GPA and CGPA]
+  s1 --> stop((End))
+</pre><figcaption>Figure 4.9 – Activity diagram</figcaption></figure>
+
+<!-- ============ 5. DESIGN ============ -->
+<h1>5. Architectural and Detailed Design</h1>
+<h2>5.1 Software Architecture</h2>
+<p>SRMS uses a <strong>layered architecture organised as Model–View–Controller (MVC)</strong>. Each layer talks only to the layer directly below it, which keeps business rules in one place and makes each layer testable on its own.</p>
+<figure><pre class="mermaid">
+flowchart TB
+  B["Browser<br/>(HTML forms, CSS)"]
+  subgraph P [Presentation layer]
+    FC["Front Controller<br/>public/index.php"] --> RT["Router<br/>+ role check"]
+    RT --> C["Controllers<br/>Auth · Admin · Lecturer · Student"]
+    C --> V["Views<br/>PHP templates"]
+  end
+  subgraph BL [Business layer]
+    S["ResultService"] --> G["GradingScheme<br/>(Strategy)"]
+  end
+  subgraph DA [Data access layer]
+    R["Repositories<br/>User · Student · Course · Enrollment · Result · Audit"] --> D["Database<br/>(Singleton PDO)"]
+  end
+  DB[("MySQL 8")]
+  B -- HTTP request --> FC
+  V -- HTML response --> B
+  C --> S
+  C --> R
+  S --> R
+  D --> DB
+</pre><figcaption>Figure 5.1 – Layered MVC architecture</figcaption></figure>
+<table>
+  <tr><th>Layer</th><th>Responsibility</th><th>Components</th></tr>
+  <tr><td>Presentation</td><td>Receive HTTP requests, check access, validate form input, render HTML</td><td>index.php, Router, Controllers, Views</td></tr>
+  <tr><td>Business</td><td>Grading rules, the approval workflow, GPA/CGPA calculation</td><td>ResultService, GradingScheme</td></tr>
+  <tr><td>Data access</td><td>All SQL queries, transactions and the connection</td><td>Repositories, Database</td></tr>
+  <tr><td>Data</td><td>Persistent storage with integrity constraints</td><td>MySQL 8 (SQLite for tests)</td></tr>
+</table>
+<p><strong>Why layered MVC instead of microservices:</strong> SRMS is a small system with one team and one database. Microservices would add network calls, deployment complexity and distributed data problems with no benefit at this scale. Layered MVC runs on cheap shared hosting and is easy for other PHP developers to maintain.</p>
+
+<h2>5.2 Design Patterns</h2>
+<table>
+  <tr><th style="width:17%">Pattern</th><th style="width:28%">Where</th><th>Justification</th></tr>
+  <tr><td>MVC</td><td>Controllers / Views / Models</td><td>Separates page logic, HTML and data, so views can change without touching business rules.</td></tr>
+  <tr><td>Front Controller</td><td><code>public/index.php</code> + <code>Router</code></td><td>One entry point means session start, error handling and the role check are written once and cannot be forgotten on a new page (supports NFR-03).</td></tr>
+  <tr><td>Repository</td><td><code>src/Models/*Repository</code></td><td>All SQL in one place; controllers and services work with arrays, not SQL. Tests can swap MySQL for an in-memory SQLite database.</td></tr>
+  <tr><td>Singleton</td><td><code>Database::connection()</code></td><td>One PDO connection per request instead of opening a new connection in every repository. <code>setConnection()</code> lets tests inject a test database.</td></tr>
+  <tr><td>Strategy</td><td><code>GradingScheme</code> interface, <code>StandardGradingScheme</code></td><td>Grading scales differ between universities and change over time. A new scale is a new class passed to <code>ResultService</code>; no existing code changes (Open/Closed Principle).</td></tr>
+  <tr><td>Template Method</td><td>Abstract <code>Controller</code> and <code>Repository</code> base classes</td><td>Shared steps (render, redirect, CSRF check, prepared query) are defined once; subclasses only add their specific actions.</td></tr>
+  <tr><td>Dependency Injection</td><td><code>ResultService</code> constructor</td><td>The grading scheme and repositories are passed in (with defaults), which makes the service easy to test and extend.</td></tr>
+</table>
+
+<h2>5.3 Database Design</h2>
+<h3>Entity–Relationship diagram</h3>
+<figure><pre class="mermaid">
+erDiagram
+  USERS ||--o| STUDENTS : "has profile"
+  USERS ||--o{ COURSES : "teaches"
+  STUDENTS ||--o{ ENROLLMENTS : "registers"
+  COURSES ||--o{ ENROLLMENTS : "has"
+  ENROLLMENTS ||--o| RESULTS : "produces"
+  USERS ||--o{ RESULTS : "last updated"
+  USERS ||--o{ AUDIT_LOG : "performs"
+  USERS {
+    int id PK
+    varchar username UK
+    varchar password_hash
+    varchar full_name
+    enum role
+    datetime created_at
+  }
+  STUDENTS {
+    int id PK
+    int user_id FK, UK
+    varchar index_number UK
+    varchar programme
+    smallint level
+  }
+  COURSES {
+    int id PK
+    varchar code UK
+    varchar title
+    tinyint credit_hours
+    tinyint semester
+    varchar academic_year
+    int lecturer_id FK
+  }
+  ENROLLMENTS {
+    int id PK
+    int student_id FK
+    int course_id FK
+  }
+  RESULTS {
+    int id PK
+    int enrollment_id FK, UK
+    decimal ca_score
+    decimal exam_score
+    decimal total
+    varchar grade
+    decimal grade_point
+    enum status
+    int updated_by FK
+    datetime updated_at
+  }
+  AUDIT_LOG {
+    int id PK
+    int user_id FK
+    varchar action
+    varchar details
+    datetime created_at
+  }
+</pre><figcaption>Figure 5.2 – Entity–Relationship diagram</figcaption></figure>
+
+<h3>Normalisation</h3>
+<p>The schema is in <strong>Third Normal Form (3NF)</strong>. Each table has a single-column primary key and all attributes depend only on that key. Students are separated from users so that login data is not repeated for each role. Enrolment is a separate associative entity that resolves the many-to-many relationship between students and courses. Results hang off enrolments, so a result cannot exist for a student who is not enrolled. <code>total</code>, <code>grade</code> and <code>grade_point</code> are stored, even though they are derived, as a deliberate denormalisation: they record the grade <em>as awarded under the scale in force at the time</em>, so a later change of grading scale cannot silently rewrite historical results.</p>
+
+<h3>Schema and data dictionary (MySQL)</h3>
+<table>
+  <tr><th>Table</th><th>Column</th><th>Type</th><th>Constraints / notes</th></tr>
+  <tr><td rowspan="6">users</td><td>id</td><td>INT UNSIGNED</td><td>PK, auto increment</td></tr>
+  <tr><td>username</td><td>VARCHAR(50)</td><td>NOT NULL, UNIQUE (index number for students)</td></tr>
+  <tr><td>password_hash</td><td>VARCHAR(255)</td><td>bcrypt hash</td></tr>
+  <tr><td>full_name</td><td>VARCHAR(100)</td><td>NOT NULL</td></tr>
+  <tr><td>role</td><td>ENUM</td><td>'admin','lecturer','student'</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>NOT NULL</td></tr>
+  <tr><td rowspan="4">students</td><td>user_id</td><td>INT UNSIGNED</td><td>FK → users.id, UNIQUE, ON DELETE CASCADE</td></tr>
+  <tr><td>index_number</td><td>VARCHAR(20)</td><td>UNIQUE</td></tr>
+  <tr><td>programme</td><td>VARCHAR(100)</td><td>NOT NULL</td></tr>
+  <tr><td>level</td><td>SMALLINT</td><td>100 / 200 / 300 / 400</td></tr>
+  <tr><td rowspan="6">courses</td><td>code</td><td>VARCHAR(15)</td><td>UNIQUE, normalised as "CSC 201"</td></tr>
+  <tr><td>title</td><td>VARCHAR(150)</td><td>NOT NULL</td></tr>
+  <tr><td>credit_hours</td><td>TINYINT</td><td>1–6</td></tr>
+  <tr><td>semester</td><td>TINYINT</td><td>1 or 2</td></tr>
+  <tr><td>academic_year</td><td>VARCHAR(9)</td><td>e.g. 2025/2026</td></tr>
+  <tr><td>lecturer_id</td><td>INT UNSIGNED</td><td>FK → users.id, ON DELETE SET NULL</td></tr>
+  <tr><td>enrollments</td><td>student_id, course_id</td><td>INT UNSIGNED</td><td>FKs; UNIQUE(student_id, course_id)</td></tr>
+  <tr><td rowspan="7">results</td><td>enrollment_id</td><td>INT UNSIGNED</td><td>FK → enrollments.id, UNIQUE (one result per enrolment)</td></tr>
+  <tr><td>ca_score</td><td>DECIMAL(5,2)</td><td>CHECK 0–40</td></tr>
+  <tr><td>exam_score</td><td>DECIMAL(5,2)</td><td>CHECK 0–60</td></tr>
+  <tr><td>total, grade, grade_point</td><td>DECIMAL / VARCHAR(2) / DECIMAL(3,1)</td><td>computed by ResultService</td></tr>
+  <tr><td>status</td><td>ENUM</td><td>'draft','submitted','published'; indexed</td></tr>
+  <tr><td>updated_by</td><td>INT UNSIGNED</td><td>FK → users.id</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>NOT NULL</td></tr>
+  <tr><td>audit_log</td><td>user_id, action, details, created_at</td><td>INT / VARCHAR / DATETIME</td><td>FK → users.id, ON DELETE SET NULL</td></tr>
+</table>
+<p>The full DDL is in <code>database/schema.mysql.sql</code>; an import file with demo data is in <code>database/srms_full.sql</code>.</p>
+
+<h2>5.4 Security Design</h2>
+<table>
+  <tr><th>Threat</th><th>Control</th></tr>
+  <tr><td>Password theft</td><td>bcrypt hashing via <code>password_hash()</code>; plain passwords are never stored</td></tr>
+  <tr><td>SQL injection</td><td>Every query uses PDO prepared statements with bound parameters</td></tr>
+  <tr><td>Cross-site scripting</td><td>All output passes through <code>e()</code> (<code>htmlspecialchars</code>)</td></tr>
+  <tr><td>Cross-site request forgery</td><td>Random per-session token on every form, checked with <code>hash_equals</code></td></tr>
+  <tr><td>Session fixation / hijacking</td><td>Session ID regenerated on login; HttpOnly and SameSite=Lax cookies</td></tr>
+  <tr><td>Privilege escalation</td><td>Router checks the role on every route; services re-check course ownership (BR-05)</td></tr>
+  <tr><td>Unauthorised grade changes</td><td>Result locking (BR-06) and full audit log</td></tr>
+</table>
+
+<!-- ============ 6. IMPLEMENTATION ============ -->
+<h1>6. Implementation</h1>
+<h2>6.1 Technology Stack</h2>
+<table>
+  <tr><th>Component</th><th>Technology</th><th>Reason</th></tr>
+  <tr><td>Server language</td><td>PHP 8.2</td><td>Required by the course; runs on almost all hosting</td></tr>
+  <tr><td>Database</td><td>MySQL 8 (SQLite 3 for automated tests)</td><td>Reliable relational database with constraints and transactions</td></tr>
+  <tr><td>Data access</td><td>PDO</td><td>Prepared statements; the same code works on MySQL and SQLite</td></tr>
+  <tr><td>Front end</td><td>HTML5, CSS3 (responsive)</td><td>No build step; works on phones</td></tr>
+  <tr><td>Web server</td><td>Apache (XAMPP) or PHP built-in server</td><td>Easy local setup</td></tr>
+  <tr><td>Version control</td><td>Git + GitHub</td><td>History, backup and submission link</td></tr>
+  <tr><td>Testing</td><td>Custom xUnit-style runner (<code>tests/run.php</code>)</td><td>No Composer or internet needed to run the tests</td></tr>
+</table>
+
+<h2>6.2 Project Structure</h2>
+<pre class="code">srms/
+├── config/config.php            database driver, credentials, score limits
+├── database/                    schema.mysql.sql, schema.sqlite.sql, install.php, srms_full.sql
+├── public/                      index.php (front controller), style.css  ← only web-visible folder
+├── src/
+│   ├── Core/                    Router, Controller, Auth, Database
+│   ├── Models/                  Repository + 6 repositories
+│   ├── Services/                ResultService, GradingScheme, StandardGradingScheme
+│   └── Controllers/             Auth, Admin, Lecturer, Student
+├── views/                       layout + admin/lecturer/student/auth templates
+├── tests/                       Unit/, Integration/, System/, run.php
+└── README.md</pre>
+<p>The prototype is about {{LOC}} lines of PHP across 40 files.</p>
+
+<h2>6.3 Key Code</h2>
+<h3>Grading strategy (BR-02)</h3>
+<pre class="code">final class StandardGradingScheme implements GradingScheme
+{
+    private const BANDS = [80 =&gt; ['A', 4.0], 75 =&gt; ['B+', 3.5], 70 =&gt; ['B', 3.0], 65 =&gt; ['C+', 2.5],
+                           60 =&gt; ['C', 2.0], 55 =&gt; ['D+', 1.5], 50 =&gt; ['D', 1.0], 0 =&gt; ['F', 0.0]];
+
+    public function grade(float $total): array
+    {
+        if ($total &lt; 0 || $total &gt; 100) {
+            throw new ValidationException('Total score must be between 0 and 100.');
+        }
+        foreach (self::BANDS as $min =&gt; [$grade, $point]) {
+            if ($total &gt;= $min) return ['grade' =&gt; $grade, 'point' =&gt; $point];
+        }
+    }
+}</pre>
+<h3>Credit-weighted GPA (BR-03)</h3>
+<pre class="code">public static function gpa(array $courses): array
+{
+    $points = 0.0; $credits = 0;
+    foreach ($courses as $c) {
+        $points  += (float) $c['grade_point'] * (int) $c['credit_hours'];
+        $credits += (int) $c['credit_hours'];
+    }
+    return [$credits &gt; 0 ? round($points / $credits, 2) : 0.0, $points, $credits];
+}</pre>
+<h3>Submission rule (FR-10, BR-06)</h3>
+<pre class="code">public function submit(int $lecturerId, int $courseId): int
+{
+    $course  = $this-&gt;ownedCourse($lecturerId, $courseId);          // BR-05
+    $summary = $this-&gt;results-&gt;statusSummary($courseId);
+    if ($summary['missing'] &gt; 0) {
+        throw new ValidationException("{$summary['missing']} student(s) still have no score. ...");
+    }
+    $n = $this-&gt;results-&gt;changeStatusForCourse($courseId, 'draft', 'submitted', $lecturerId);
+    $this-&gt;audit-&gt;log($lecturerId, 'results_submitted', "{$n} result(s) submitted for {$course['code']}");
+    return $n;
+}</pre>
+<h3>Role check in the front controller (NFR-03)</h3>
+<pre class="code">$router-&gt;add('admin/review',   AdminController::class,    'review', 'admin');
+$router-&gt;add('lecturer/scores', LecturerController::class, 'scores', 'lecturer');
+// Router::dispatch(): guests are redirected to sign in; a wrong role gets HTTP 403</pre>
+
+<h2>6.4 Screenshots of the Working Prototype</h2>
+<div class="two">
+  <figure><img src="build/screens/login.png"><figcaption>Figure 6.1 – Sign-in page</figcaption></figure>
+  <figure><img src="build/screens/admin-dashboard.png"><figcaption>Figure 6.2 – Admin dashboard with course status and audit log</figcaption></figure>
+  <figure><img src="build/screens/admin-courses.png"><figcaption>Figure 6.3 – Course management, enrolment and lecturer registration</figcaption></figure>
+  <figure><img src="build/screens/admin-review.png"><figcaption>Figure 6.4 – Admin reviews submitted results before publishing</figcaption></figure>
+  <figure><img src="build/screens/lecturer-courses.png"><figcaption>Figure 6.5 – Lecturer's assigned courses</figcaption></figure>
+  <figure><img src="build/screens/lecturer-scores.png"><figcaption>Figure 6.6 – Score entry with automatic grades</figcaption></figure>
+</div>
+<figure><img src="build/screens/student-results.png" style="max-width:80%"><figcaption>Figure 6.7 – Student results with semester GPA, CGPA and class</figcaption></figure>
+
+<h2>6.5 Version Control</h2>
+<p>The source code is managed with Git and hosted on GitHub: <strong>{{GITHUB}}</strong>. Each commit is a complete, working step, and defect fixes reference their defect ID.</p>
+<table>
+  <tr><th style="width:12%">Commit</th><th style="width:20%">Date</th><th>Message</th></tr>
+  {{COMMITS}}
+</table>
+
+<!-- ============ 7. TESTING ============ -->
+<h1>7. Testing</h1>
+<h2>7.1 Test Plan</h2>
+<table>
+  <tr><th style="width:22%">Item</th><th>Plan</th></tr>
+  <tr><td>Objectives</td><td>Show that SRMS meets FR-01 to FR-15 and the security NFRs; find and remove defects before submission.</td></tr>
+  <tr><td>Items under test</td><td>Grading scheme, result service, repositories and database schema, all web pages and access rules.</td></tr>
+  <tr><td>Not tested</td><td>Load testing above 1,000 users; browsers older than 2022; MySQL-specific performance tuning.</td></tr>
+  <tr><td>Approach</td><td><strong>Unit tests</strong> on pure business logic (grading, GPA, validation). <strong>Integration tests</strong> on service + repositories + the real SQL schema in an in-memory database. <strong>System tests</strong> driving the full application over HTTP like a browser, on a freshly installed demo database. <strong>Exploratory testing</strong> by hand to find defects the scripted tests do not cover. <strong>Regression:</strong> every defect fix gets a new test, and the whole suite is re-run.</td></tr>
+  <tr><td>Techniques</td><td>Equivalence partitioning and boundary value analysis (grade bands, score limits), state-transition testing (result life cycle), negative testing (wrong password, wrong role, missing CSRF token).</td></tr>
+  <tr><td>Environment</td><td>Windows 11, PHP {{PHP}}, SQLite 3 (tests), MySQL 8.0 (deployment), Chrome.</td></tr>
+  <tr><td>Entry criteria</td><td>The feature is code-complete for the sprint and the code passes <code>php -l</code> syntax checks.</td></tr>
+  <tr><td>Exit criteria</td><td>100% of test cases pass; no open High or Medium defects; every FR traced to at least one test (Section 3.5).</td></tr>
+  <tr><td>Tools</td><td><code>php tests/run.php [unit|integration|system]</code></td></tr>
+</table>
+
+<h2>7.2 Unit Test Cases</h2>
+<table>
+  <tr><th style="width:8%">ID</th><th>Test case</th><th style="width:32%">Input</th><th style="width:22%">Expected result</th></tr>
+  <tr><td>UT-01</td><td>Each grade band at its lower boundary</td><td>80, 75, 70, 65, 60, 55, 50, 0</td><td>A, B+, B, C+, C, D+, D, F with points 4.0 → 0.0</td></tr>
+  <tr><td>UT-02</td><td>Scores just below a boundary</td><td>79.5, 49.99, 100</td><td>B+, F, A</td></tr>
+  <tr><td>UT-03</td><td>Totals outside 0–100</td><td>100.5, −1</td><td>ValidationException</td></tr>
+  <tr><td>UT-04</td><td>CGPA to class of degree</td><td>3.6, 3.59, 2.5, 2.0, 1.0, 0.99</td><td>First, Second Upper, Second Lower, Third, Pass, Fail</td></tr>
+  <tr><td>UT-05</td><td>Total and grade from CA + exam</td><td>(36, 52), (28, 41)</td><td>88 A 4.0; 69 C+ 2.5</td></tr>
+  <tr><td>UT-06</td><td>Score limits</td><td>CA 41; exam 61; CA −1</td><td>Clear validation messages</td></tr>
+  <tr><td>UT-07</td><td>Credit-weighted GPA</td><td>A (3 credits), C (2 credits)</td><td>GPA 3.20</td></tr>
+  <tr><td>UT-08</td><td>GPA with no courses</td><td>empty list</td><td>0.0, no division by zero</td></tr>
+</table>
+
+<h2>7.3 Integration Test Cases</h2>
+<table>
+  <tr><th style="width:8%">ID</th><th>Test case</th><th style="width:40%">Expected result</th></tr>
+  <tr><td>IT-01</td><td>Save scores through ResultService into the database</td><td>Row stored with total 85, grade A, status draft</td></tr>
+  <tr><td>IT-02</td><td>Lecturer enters scores for another lecturer's course</td><td>Refused: "only … courses assigned to you"</td></tr>
+  <tr><td>IT-03</td><td>Submit while a student has no score</td><td>Refused: "still have no score"</td></tr>
+  <tr><td>IT-04</td><td>Full life cycle draft → submitted → published; edit after submit</td><td>2 submitted, edit refused, 2 published</td></tr>
+  <tr><td>IT-05</td><td>Transcript before and after publishing</td><td>Empty before; CGPA 4.00, First Class after</td></tr>
+  <tr><td>IT-06</td><td>Admin returns submitted results</td><td>Results become editable drafts</td></tr>
+  <tr><td>IT-07</td><td>Duplicate enrolment / duplicate username</td><td>Enrolment is idempotent; database rejects duplicate user</td></tr>
+  <tr><td>IT-08</td><td>Audit trail on score changes</td><td>Latest audit entry is "scores_saved … CSC 201"</td></tr>
+  <tr><td>IT-09</td><td>Course code normalisation (regression for DEF-01)</td><td>"csc201" and " CSC   201 " both become "CSC 201"</td></tr>
+</table>
+
+<h2>7.4 System Test Cases</h2>
+<table>
+  <tr><th style="width:8%">ID</th><th>Scenario and steps</th><th style="width:36%">Expected result</th></tr>
+  <tr><td>ST-01</td><td>Open login page → sign in as admin/admin123</td><td>Redirect to dashboard showing "Awaiting approval"</td></tr>
+  <tr><td>ST-02</td><td>Sign in as admin with a wrong password</td><td>"Wrong username or password", no session</td></tr>
+  <tr><td>ST-03</td><td>Open the admin page as a guest; then as a student</td><td>Guest redirected to login; student gets HTTP 403</td></tr>
+  <tr><td>ST-04</td><td>Post the login form without a CSRF token</td><td>HTTP 419, request rejected</td></tr>
+  <tr><td>ST-05</td><td>Student UEB3201021 opens My results</td><td>Sees CSC 201 and "First Class"; does not see unpublished CSC 202</td></tr>
+  <tr><td>ST-06</td><td>Admin publishes CSC 202 → student signs in again</td><td>Student now sees CSC 202</td></tr>
+  <tr><td>ST-07</td><td>Lecturer enters CA = 45 on CSC 204</td><td>"CA score must be between 0 and 40"; nothing saved</td></tr>
+  <tr><td>ST-08</td><td>Admin registers UEB3209999 → new student signs in</td><td>Student listed; sign-in goes to results page</td></tr>
+  <tr><td>ST-09</td><td>Lecturer types the last missing score and presses Submit directly (regression for DEF-02)</td><td>Score saved and course submitted; no "no score" rows remain</td></tr>
+</table>
+
+<h2>7.5 Test Results</h2>
+<p>The full suite was run with <code>php tests/run.php</code> on {{TEST_RUN}} (PHP {{PHP}}). <strong>{{TEST_PASS}} of {{TEST_TOTAL}} tests passed</strong>.</p>
+<table>
+  <tr><th style="width:9%">ID</th><th style="width:13%">Level</th><th>Test</th><th style="width:10%">Time</th><th style="width:9%">Result</th></tr>
+  {{TEST_ROWS}}
+</table>
+<table>
+  <tr><th>Level</th><th>Cases</th><th>Passed</th><th>Failed</th></tr>
+  {{TEST_SUMMARY}}
+</table>
+
+<h2>7.6 Defect Report</h2>
+<p>The scripted tests passed on their first run, so exploratory testing was carried out by hand on the running system. It found three defects. Each was fixed, given a regression test, and the full suite was re-run.</p>
+<table>
+  <tr><th style="width:9%">ID</th><th>Description and steps to reproduce</th><th style="width:11%">Severity</th><th style="width:27%">Root cause → fix</th><th style="width:12%">Status</th></tr>
+  <tr><td>DEF-01</td><td><strong>Duplicate courses with the same code.</strong> Courses → Add course with code "CSC201" while "CSC 201" exists. A second course is created, so the same course appears twice.</td><td class="sev-m">Medium</td><td>Codes were compared literally. Added <code>CourseRepository::normalizeCode()</code> so all spellings are stored as "CSC 201". Test IT-09.</td><td>Fixed<br>{{FIX1}}</td></tr>
+  <tr><td>DEF-02</td><td><strong>Submit discards unsaved scores.</strong> Lecturer types the last missing score and clicks "Submit for approval" without saving first. The typed score is lost and the submit fails with "1 student(s) still have no score".</td><td class="sev-h">High</td><td>The submit action ignored the posted scores. The controller now saves the form before submitting. Test ST-09.</td><td>Fixed<br>{{FIX1}}</td></tr>
+  <tr><td>DEF-03</td><td><strong>Audit log times one hour ahead.</strong> Sign in at 20:28 → dashboard shows the sign-in at 21:28.</td><td class="sev-l">Low</td><td>PHP used the server's php.ini time zone. The app now sets <code>Africa/Accra</code> at start-up.</td><td>Fixed<br>{{FIX2}}</td></tr>
+</table>
+<p><strong>Defect summary:</strong> 3 found, 3 fixed, 0 open. Severity: 1 High, 1 Medium, 1 Low. Exit criteria (Section 7.1) are met.</p>
+
+<!-- ============ 8. PROJECT MANAGEMENT ============ -->
+<h1>8. Project Management</h1>
+<h2>8.1 Work Breakdown Structure (WBS)</h2>
+<figure><pre class="mermaid">
+flowchart TD
+  P["SRMS Project"]
+  P --> W1["1 Initiation"]
+  P --> W2["2 Requirements"]
+  P --> W3["3 Design"]
+  P --> W4["4 Implementation"]
+  P --> W5["5 Testing"]
+  P --> W6["6 Closure"]
+  W1 --> W11["1.1 Problem study<br/>1.2 Proposal<br/>1.3 Process model"]
+  W2 --> W21["2.1 Interviews & document analysis<br/>2.2 FR & NFR<br/>2.3 SRS<br/>2.4 Use cases"]
+  W3 --> W31["3.1 Architecture<br/>3.2 Class & sequence diagrams<br/>3.3 State & activity diagrams<br/>3.4 ER diagram & schema"]
+  W4 --> W41["4.1 Core framework & auth<br/>4.2 Admin module<br/>4.3 Lecturer module<br/>4.4 Student module<br/>4.5 Git & GitHub"]
+  W5 --> W51["5.1 Test plan<br/>5.2 Unit & integration tests<br/>5.3 System tests<br/>5.4 Defect fixing"]
+  W6 --> W61["6.1 Final report<br/>6.2 Presentation<br/>6.3 Submission"]
+</pre><figcaption>Figure 8.1 – Work breakdown structure</figcaption></figure>
+<table>
+  <tr><th style="width:9%">WBS</th><th>Work package</th><th style="width:30%">Deliverable</th><th style="width:10%">Effort (h)</th></tr>
+  <tr><td>1</td><td>Initiation</td><td>Project proposal, process model</td><td>6</td></tr>
+  <tr><td>2</td><td>Requirements</td><td>FR/NFR list, SRS, use cases</td><td>10</td></tr>
+  <tr><td>3</td><td>Design</td><td>UML diagrams, architecture, ER diagram, schema</td><td>12</td></tr>
+  <tr><td>4</td><td>Implementation</td><td>Working prototype, GitHub repository</td><td>24</td></tr>
+  <tr><td>5</td><td>Testing</td><td>Test plan, 26 test cases, results, defect report</td><td>10</td></tr>
+  <tr><td>6</td><td>Closure</td><td>Final report, presentation</td><td>8</td></tr>
+  <tr><th colspan="3">Total</th><th>70</th></tr>
+</table>
+
+<h2>8.2 Gantt Chart</h2>
+<figure><pre class="mermaid">
+gantt
+  dateFormat YYYY-MM-DD
+  axisFormat %d %b
+  tickInterval 1week
+  section Sprint 0 · Initiation & requirements
+  Problem study & proposal        :done, s01, 2026-10-26, 2d
+  Process model selection         :done, s02, after s01, 1d
+  Requirements & SRS              :done, s03, after s02, 3d
+  Use cases                        :done, s04, after s03, 1d
+  section Sprint 1 · Design
+  Architecture & patterns          :done, s11, 2026-11-02, 2d
+  UML diagrams                     :done, s12, after s11, 3d
+  ER diagram & schema              :done, s13, after s12, 2d
+  section Sprint 2 · Core build
+  Framework, auth, database        :done, s21, 2026-11-09, 2d
+  Admin module                     :done, s22, after s21, 3d
+  Lecturer module & grading        :done, s23, after s22, 2d
+  section Sprint 3 · Finish & test
+  Student module & transcript      :done, s31, 2026-11-16, 2d
+  Unit, integration, system tests  :done, s32, after s31, 2d
+  Defect fixing & regression       :done, s33, after s32, 1d
+  Report & presentation            :done, s34, after s33, 2d
+  section Milestones
+  Proposal approved                :milestone, m1, 2026-11-01, 0d
+  Prototype demo                   :milestone, m2, 2026-11-15, 0d
+  Final submission                 :milestone, m3, 2026-11-23, 0d
+</pre><figcaption>Figure 8.2 – Gantt chart (four one-week sprints)</figcaption></figure>
+
+<h2>8.3 Sprint Backlog</h2>
+<table>
+  <tr><th style="width:10%">Sprint</th><th style="width:9%">Story</th><th>User story</th><th style="width:8%">Points</th><th style="width:10%">Status</th></tr>
+  <tr><td rowspan="2">0</td><td>US-01</td><td>As the supervisor, I want a proposal and SRS so that the scope is agreed before building.</td><td>5</td><td>Done</td></tr>
+  <tr><td>US-02</td><td>As the developer, I want use cases for every role so that the features are clear.</td><td>3</td><td>Done</td></tr>
+  <tr><td rowspan="2">1</td><td>US-03</td><td>As the developer, I want the architecture and class/sequence diagrams so that the code has a clear structure.</td><td>5</td><td>Done</td></tr>
+  <tr><td>US-04</td><td>As the developer, I want a normalised database schema with constraints so that data stays correct.</td><td>3</td><td>Done</td></tr>
+  <tr><td rowspan="4">2</td><td>US-05</td><td>As a user, I want to sign in so that only I can see my pages.</td><td>3</td><td>Done</td></tr>
+  <tr><td>US-06</td><td>As an admin, I want to register students and lecturers so that they can use the system.</td><td>3</td><td>Done</td></tr>
+  <tr><td>US-07</td><td>As an admin, I want to create courses and enrol students so that lecturers have class lists.</td><td>5</td><td>Done</td></tr>
+  <tr><td>US-08</td><td>As a lecturer, I want to enter CA and exam scores and see grades computed so that I make no calculation errors.</td><td>8</td><td>Done</td></tr>
+  <tr><td rowspan="5">3</td><td>US-09</td><td>As a lecturer, I want to submit results for approval so that the admin can check them.</td><td>3</td><td>Done</td></tr>
+  <tr><td>US-10</td><td>As an admin, I want to publish or return results so that only approved results are released.</td><td>5</td><td>Done</td></tr>
+  <tr><td>US-11</td><td>As a student, I want to see my results, GPA and CGPA so that I know my standing.</td><td>5</td><td>Done</td></tr>
+  <tr><td>US-12</td><td>As the developer, I want automated tests so that changes do not break grading.</td><td>5</td><td>Done</td></tr>
+  <tr><td>US-13</td><td>As the supervisor, I want a final report and presentation.</td><td>5</td><td>Done</td></tr>
+  <tr><td>Backlog</td><td>US-14 – 16</td><td>Bulk score upload from Excel · SMS notifications · Signed PDF transcripts</td><td>13</td><td>Future</td></tr>
+</table>
+<p><strong>Velocity:</strong> Sprint 0 – 8 points, Sprint 1 – 8, Sprint 2 – 19, Sprint 3 – 23. The velocity rose once the design was in place and the framework code could be reused.</p>
+
+<h2>8.4 Risk Management Plan</h2>
+<p>Risks are scored as Probability × Impact, each on a scale of 1 (low) to 3 (high). A score of 6 or more is treated as high priority.</p>
+<table>
+  <tr><th style="width:6%">ID</th><th style="width:20%">Risk</th><th style="width:5%">P</th><th style="width:5%">I</th><th style="width:7%">Score</th><th>Mitigation (reduce)</th><th style="width:22%">Contingency (if it happens)</th></tr>
+  <tr><td>R1</td><td>Deadline slips (solo developer, other courses)</td><td>3</td><td>3</td><td class="sev-h">9</td><td>Scrum priority order: core features first; weekly sprint goals</td><td>Move "Should" items to future work</td></tr>
+  <tr><td>R2</td><td>Wrong grade or GPA calculation</td><td>2</td><td>3</td><td class="sev-h">6</td><td>Business rules written in the SRS; boundary-value unit tests on every band</td><td>Admin returns results; audit log shows what changed</td></tr>
+  <tr><td>R3</td><td>Unauthorised change of results</td><td>2</td><td>3</td><td class="sev-h">6</td><td>Role checks, ownership checks, result locking, CSRF, hashing</td><td>Audit log to trace and reverse; reset passwords</td></tr>
+  <tr><td>R4</td><td>Loss of source code or laptop failure</td><td>2</td><td>3</td><td class="sev-h">6</td><td>Git commits after each task; pushed to GitHub</td><td>Clone from GitHub on another machine</td></tr>
+  <tr><td>R5</td><td>Scope creep (fees, SMS, transcripts)</td><td>2</td><td>2</td><td class="sev-m">4</td><td>Scope agreed in the proposal; new ideas go to the backlog</td><td>Defer to future work</td></tr>
+  <tr><td>R6</td><td>Requirements misunderstood (grading scale differs)</td><td>2</td><td>2</td><td class="sev-m">4</td><td>Sprint review demos; grading scale isolated behind the Strategy pattern</td><td>Plug in a new GradingScheme class</td></tr>
+  <tr><td>R7</td><td>Hosting environment differs (PHP/MySQL versions)</td><td>2</td><td>2</td><td class="sev-m">4</td><td>Standard PDO only; tested on PHP 8.2 and with SQLite and MySQL schemas</td><td>Use XAMPP for the demo</td></tr>
+  <tr><td>R8</td><td>Developer illness</td><td>1</td><td>3</td><td class="sev-m">3</td><td>Buffer in last sprint; documentation kept up to date</td><td>Request extension with evidence</td></tr>
+  <tr><td>R9</td><td>Data loss in production database</td><td>1</td><td>3</td><td class="sev-m">3</td><td>Daily mysqldump backups (recommended for deployment)</td><td>Restore from last backup</td></tr>
+</table>
+<p><strong>Monitoring:</strong> risks were reviewed at each sprint retrospective. R1 occurred in Sprint 3 and was handled by moving bulk upload and notifications to future work. R2 was reduced by 8 unit tests on the grading rules, and R4 by GitHub.</p>
+
+<!-- ============ 9. CONCLUSION ============ -->
+<h1>9. Conclusion, Limitations and Future Work</h1>
+<h2>9.1 Conclusion</h2>
+<p>The project delivered a working Student Result Management System that solves the problems in Section 1.2. Grades and GPAs are computed by one tested component. Results can only change through a controlled draft → submitted → published workflow with a full audit trail. Students see their own results privately as soon as they are approved. Every objective in Section 1.3 was met, and all 15 functional requirements trace to design elements and passing tests.</p>
+<p>Applying the full SDLC showed the value of each phase. The written business rules (BR-01 to BR-07) became test cases directly. The state diagram defined the workflow that the code enforces. Exploratory testing found a high-severity usability defect (DEF-02) that scripted tests had missed.</p>
+<h2>9.2 Limitations</h2>
+<ul>
+  <li>One lecturer per course; team-taught courses are not supported.</li>
+  <li>Scores are entered one class at a time; there is no spreadsheet import.</li>
+  <li>No password reset by email; the admin sets initial passwords.</li>
+  <li>The grading scale is set in code, not through an admin screen.</li>
+</ul>
+<h2>9.3 Future Work</h2>
+<ul>
+  <li>Bulk upload of scores from Excel/CSV.</li>
+  <li>SMS or email notification when results are published.</li>
+  <li>Downloadable, digitally signed PDF transcripts.</li>
+  <li>Admin screen for grading scales and academic calendar.</li>
+  <li>Result analytics: pass rates and grade distribution per course.</li>
+  <li>Integration with the university student information system.</li>
+</ul>
+
+<h2>References</h2>
+<ol>
+  <li>Sommerville, I. (2016). <em>Software Engineering</em> (10th ed.). Pearson.</li>
+  <li>Pressman, R. S., &amp; Maxim, B. R. (2020). <em>Software Engineering: A Practitioner's Approach</em> (9th ed.). McGraw-Hill.</li>
+  <li>IEEE (1998). <em>IEEE Std 830-1998: Recommended Practice for Software Requirements Specifications</em>.</li>
+  <li>Gamma, E., Helm, R., Johnson, R., &amp; Vlissides, J. (1994). <em>Design Patterns: Elements of Reusable Object-Oriented Software</em>. Addison-Wesley.</li>
+  <li>Fowler, M. (2002). <em>Patterns of Enterprise Application Architecture</em>. Addison-Wesley.</li>
+  <li>Schwaber, K., &amp; Sutherland, J. (2020). <em>The Scrum Guide</em>. scrumguides.org.</li>
+  <li>OWASP Foundation (2021). <em>OWASP Top 10</em>. owasp.org.</li>
+  <li>The PHP Group. <em>PHP Manual: PDO and password hashing</em>. php.net.</li>
+</ol>
+
+<h1>Appendix A: Installation and User Guide</h1>
+<h2>Installation (XAMPP)</h2>
+<ol>
+  <li>Copy the project folder to <code>C:\xampp\htdocs\srms</code>.</li>
+  <li>Start Apache and MySQL in the XAMPP Control Panel.</li>
+  <li>Check the MySQL user and password in <code>config/config.php</code>.</li>
+  <li>Create the database: in phpMyAdmin choose <em>Import</em> → <code>database/srms_full.sql</code>, or run <code>C:\xampp\php\php.exe database\install.php</code>.</li>
+  <li>Open <code>http://localhost/srms/public/</code>.</li>
+  <li>Run the tests with <code>C:\xampp\php\php.exe tests\run.php</code>.</li>
+</ol>
+<h2>Demo accounts</h2>
+<table>
+  <tr><th>Role</th><th>Username</th><th>Password</th></tr>
+  <tr><td>Administrator</td><td>admin</td><td>admin123</td></tr>
+  <tr><td>Lecturer</td><td>k.mensah or a.owusu</td><td>lecturer123</td></tr>
+  <tr><td>Student</td><td>UEB3201021 (to UEB3201026)</td><td>student123</td></tr>
+</table>
+<h2>Using the system</h2>
+<ol>
+  <li><strong>Admin:</strong> Students → add a student. Courses → add lecturers and courses, then tick students under <em>Enrol students</em>.</li>
+  <li><strong>Lecturer:</strong> My courses → open a course → type CA and exam scores → <em>Save as draft</em>. When every student has a score, press <em>Submit for approval</em>.</li>
+  <li><strong>Admin:</strong> Dashboard → <em>Review</em> next to a course marked "Awaiting approval" → <em>Publish results</em> or <em>Return to lecturer</em>.</li>
+  <li><strong>Student:</strong> sign in with your index number → <em>My results</em> shows each semester's GPA, your CGPA and class.</li>
+</ol>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose',
+  flowchart: { htmlLabels: true, useMaxWidth: true }, sequence: { useMaxWidth: true, mirrorActors: false },
+  gantt: { useWidth: 1100, barHeight: 18, fontSize: 12, sectionFontSize: 12, leftPadding: 230, topPadding: 40 },
+  themeVariables: { fontFamily: 'Segoe UI, Arial, sans-serif', fontSize: '13px' } });
+</script>
+</body>
+</html>
