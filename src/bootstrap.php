@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+// Ghana time (GMT, no daylight saving). Without this PHP uses php.ini's zone and audit times were 1 hour off (DEF-03).
+date_default_timezone_set('Africa/Accra');
+
 // PSR-4 style autoloader: App\Foo\Bar -> src/Foo/Bar.php
 spl_autoload_register(function (string $class): void {
     $prefix = 'App\\';
