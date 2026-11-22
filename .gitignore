@@ -1,0 +1,4 @@
+database/*.sqlite
+*.log
+/docs/build/
+.env
