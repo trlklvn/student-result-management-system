@@ -291,31 +291,7 @@ flowchart LR
 <!-- ============ 4. MODELLING ============ -->
 <h1>4. System Modelling</h1>
 <h2>4.1 Use Case Diagram</h2>
-<figure class="uc"><pre class="mermaid">
-flowchart LR
-  A["Administrator<br/>«actor»"]
-  L["Lecturer<br/>«actor»"]
-  S["Student<br/>«actor»"]
-  subgraph SRMS [Student Result Management System]
-    direction TB
-    UC1([UC-01 Sign in / Sign out])
-    UC2([UC-02 Register student])
-    UC3([UC-03 Manage courses & lecturers])
-    UC4([UC-04 Enrol students])
-    UC9([UC-09 View dashboard & audit log])
-    UC7([UC-07 Review & publish results])
-    UC7b([Return results to lecturer])
-    UC5([UC-05 Enter scores])
-    UCg([Compute grade])
-    UC6([UC-06 Submit results])
-    UC8([UC-08 View results & CGPA])
-  end
-  A --- UC1 & UC2 & UC3 & UC4 & UC7 & UC9
-  L --- UC1 & UC5 & UC6
-  S --- UC1 & UC8
-  UC5 -. «include» .-> UCg
-  UC7b -. «extend» .-> UC7
-</pre><figcaption>Figure 4.1 – Use case diagram</figcaption></figure>
+<figure class="uc"><img src="../usecase.svg" style="width:100%;border:none"><figcaption>Figure 4.1 – Use case diagram</figcaption></figure>
 
 <h3>Use case descriptions</h3>
 <table>

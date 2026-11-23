@@ -135,13 +135,7 @@ img.shot { width: 100%; border: 1px solid var(--line); border-radius: 6pt; }
 
 <section class="slide" data-n="6">
   <h2>Use cases</h2>
-  <div class="diagram"><pre class="mermaid">
-flowchart LR
-  A["Administrator"] --- UC2([Register students]) & UC3([Manage courses & lecturers]) & UC4([Enrol students]) & UC7([Review & publish results]) & UC9([Dashboard & audit log])
-  L["Lecturer"] --- UC5([Enter scores]) & UC6([Submit results])
-  S["Student"] --- UC8([View results & CGPA])
-  UC5 -. «include» .-> G([Compute grade])
-</pre></div>
+  <div class="diagram"><img src="../usecase.svg" style="max-height:5.4in;max-width:100%"></div>
 </section>
 
 <section class="slide" data-n="7">
